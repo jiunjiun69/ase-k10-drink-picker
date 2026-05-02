@@ -175,7 +175,7 @@
           <div class="data-grid">
             <form class="data-card" id="storeReportForm">
               <h3>回報新店或異動</h3>
-              <p>新開、歇業、暫停外送、營業時間和優惠都可以回報，會開一張 GitHub issue 留待更新。</p>
+              <p>新開、歇業、暫停外送、營業時間和優惠都可以回報。請附 Foodpanda 或 Uber Eats 店家頁，避免誤植。</p>
               <label>
                 <span>店名</span>
                 <input id="reportStoreName" type="text" placeholder="例如：某某茶 楠梓店" />
@@ -191,15 +191,15 @@
                 </select>
               </label>
               <label>
-                <span>平台連結或備註</span>
-                <textarea id="reportNote" rows="4" placeholder="貼上 Foodpanda/Uber Eats 連結、營業時間、優惠內容或你看到的狀態"></textarea>
+                <span>外送店家頁或備註</span>
+                <textarea id="reportNote" rows="4" placeholder="請貼上 Foodpanda/Uber Eats 店家頁；也可補營業時間、優惠內容或你看到的狀態"></textarea>
               </label>
               <button class="primary-action" type="submit">開 GitHub 回報</button>
             </form>
 
             <div class="data-card">
               <h3>本機匯入/匯出</h3>
-              <p>想先自己維護一版清單，可以匯出 JSON，修改後再貼回來套用；這只會影響目前瀏覽器。</p>
+              <p>想先自己維護一版清單，可以匯出 JSON，修改後再貼回來套用；匯入資料也必須含直接外送店家頁。</p>
               <div class="data-actions">
                 <button class="ghost-action compact" id="exportDataButton" type="button">匯出 JSON</button>
                 <button class="ghost-action compact" id="resetDataButton" type="button">重置內建資料</button>
@@ -219,7 +219,8 @@
           <p>
             店家候選依 2026-05-02 可查到的 Foodpanda、Uber Eats 公開頁面整理；平台外送範圍、營業時間、
             外送費與優惠會隨時間、登入狀態和定位變動。營業中使用公開頁面整理的參考營業時間即時計算；
-            優惠候選只代表近期公開頁面或品牌優惠訊息有折扣線索，下單前請以平台 App 的即時畫面為準。
+            每間內建店家都需要可核對的外送頁連結；優惠候選只代表近期公開頁面或品牌優惠訊息有折扣線索，
+            下單前請以平台 App 的即時畫面為準。
           </p>
           <div class="source-links" id="sourceLinks"></div>
         </section>

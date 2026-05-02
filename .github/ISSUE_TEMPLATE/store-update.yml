@@ -26,7 +26,7 @@ body:
   - type: textarea
     id: details
     attributes:
-      label: 平台連結或備註
-      placeholder: 貼上 Foodpanda/Uber Eats 連結、營業時間、優惠內容或你看到的狀態
+      label: 外送店家頁或備註
+      placeholder: 請貼上 Foodpanda/Uber Eats 店家頁；也可補營業時間、優惠內容或你看到的狀態。只有搜尋頁或沒有外送頁的店會先列為待確認。
     validations:
       required: true

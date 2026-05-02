@@ -546,6 +546,62 @@ let stores = [
     },
     source: "Uber Eats 公開頁面",
   },
+  {
+    id: "naptea-yixiang",
+    name: "再睡5分鐘 義享時尚廣場店",
+    area: "義享時尚廣場",
+    address: "高雄市鼓山區大順一路115號B2",
+    rating: 4.9,
+    reviews: "1000+",
+    budget: 100,
+    eta: "約 40-60 分",
+    mood: ["milk", "sweet", "new"],
+    caffeine: true,
+    group: true,
+    color: "#7d6fd0",
+    summary: "雖然距離 K10 較遠，但使用者在 K10 實測可叫；奶蓋、歐蕾和黑糖珍珠系是主打。",
+    picks: ["棉被午茉綠", "黑糖珍珠好濃鮮奶", "日安紅珍珠歐蕾"],
+    platforms: {
+      foodpanda: "https://www.foodpanda.com.tw/restaurant/pptw/zai-shui-5fen-zhong-yi-xiang-shi-shang-guang-chang-dian",
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E5%86%8D%E7%9D%A15%E5%88%86%E9%90%98-%E9%AB%98%E9%9B%84%E7%BE%A9%E4%BA%AB%E5%BA%97/lZO2SMPMX-aYkIDmwK1fhQ",
+    },
+    promotion: {
+      label: "Foodpanda 免費外送線索",
+      detail: "公開搜尋結果列為 Foodpanda 飲料店與免費外送候選，實際資格需以 K10 定位下 App 顯示為準。",
+      items: ["Foodpanda 飲料店候選", "K10 使用者實測可叫"],
+      url: "https://www.foodpanda.com.tw/restaurant/pptw/zai-shui-5fen-zhong-yi-xiang-shi-shang-guang-chang-dian",
+      verified: DATA_VERSION,
+    },
+    source: "K10 使用者實測回報 / Foodpanda 與 Uber Eats 外送頁",
+  },
+  {
+    id: "dont-yell-nanzi",
+    name: "不要對我尖叫 高雄楠梓店",
+    area: "大學二十街",
+    address: "高雄市楠梓區大學二十街11號",
+    rating: 5,
+    reviews: "500+",
+    budget: 85,
+    eta: "約 25-45 分",
+    mood: ["fruit", "tea", "milk", "new", "group"],
+    caffeine: true,
+    group: true,
+    color: "#d35c74",
+    summary: "使用者在 K10 實測可叫，Foodpanda 公開頁面有 15% 優惠和氣泡/歐蕾品項。",
+    picks: ["伯爵紅茶歐蕾", "冬瓜菊花茶", "香柚檸檬氣泡飲"],
+    platforms: {
+      foodpanda: "https://www.foodpanda.com.tw/chain/cr8ax/bu-yao-dui-wo-jian-jiao",
+    },
+    promotion: {
+      label: "Foodpanda 15% 優惠",
+      detail: "Foodpanda 公開頁面列出所有項目 15% 優惠自動套用，另有胖達幣回饋門檻。",
+      items: ["所有項目 15% 優惠", "冬瓜菊花茶 $47 起，原 $55", "伯爵紅茶歐蕾 $60 起，原 $70"],
+      url: "https://www.foodpanda.com.tw/chain/cr8ax/bu-yao-dui-wo-jian-jiao",
+      verified: DATA_VERSION,
+    },
+    source: "K10 使用者實測回報 / Foodpanda 公開頁面",
+  },
 ];
 
 const ALL_DAYS = [0, 1, 2, 3, 4, 5, 6];
@@ -657,6 +713,17 @@ const operatingInfo = {
     hoursLabel: "每日 00:00-24:00",
     hours: [{ days: ALL_DAYS, open: "00:00", close: "24:00" }],
   },
+  "naptea-yixiang": {
+    hoursLabel: "平日 11:05-21:00；週末 10:35-21:00",
+    hours: [
+      { days: WEEKDAYS, open: "11:05", close: "21:00" },
+      { days: WEEKENDS, open: "10:35", close: "21:00" },
+    ],
+  },
+  "dont-yell-nanzi": {
+    hoursLabel: "每日 10:00-20:45",
+    hours: [{ days: ALL_DAYS, open: "10:00", close: "20:45" }],
+  },
 };
 
 const STORE_OVERRIDE_KEY = "k10StoresOverride";
@@ -664,6 +731,12 @@ const STORE_OVERRIDE_KEY = "k10StoresOverride";
 const builtInStores = cloneStores(stores);
 
 initializeStoreData();
+
+const DELIVERY_PAGE_PATTERNS = [
+  "foodpanda.com.tw/restaurant/",
+  "foodpanda.com.tw/chain/",
+  "ubereats.com/tw/store/",
+];
 
 const state = {
   mood: "refreshing",
@@ -920,6 +993,10 @@ function exportStoreData() {
 function importStoreData() {
   try {
     const imported = normalizeStoreList(JSON.parse(els.storeJsonInput.value));
+    const invalid = imported.filter((store) => !hasDirectDeliveryLink(store));
+    if (invalid.length) {
+      throw new Error(`有 ${invalid.length} 間缺少直接外送店家頁，未套用`);
+    }
     localStorage.setItem(STORE_OVERRIDE_KEY, JSON.stringify(imported));
     initializeStoreData();
     state.current = pickStore(false);
@@ -968,6 +1045,14 @@ function setDataMessage(message) {
   els.dataMessage.textContent = message;
 }
 
+function hasDirectDeliveryLink(store) {
+  return Object.values(store.platforms || {}).some(isDirectDeliveryPageUrl);
+}
+
+function isDirectDeliveryPageUrl(url) {
+  return DELIVERY_PAGE_PATTERNS.some((pattern) => String(url).includes(pattern));
+}
+
 function cloneStores(value) {
   return JSON.parse(JSON.stringify(value));
 }
@@ -984,6 +1069,7 @@ function getFilteredStores(ignoreSearch = false) {
   const now = getTaipeiNowParts();
   return stores.filter((store) => {
     const platformMatch = Object.keys(store.platforms).some((platform) => state.platforms.has(platform));
+    const deliveryLinkMatch = hasDirectDeliveryLink(store);
     const budgetMatch = store.budget <= state.budget;
     const groupMatch = !state.groupOnly || store.group;
     const caffeineMatch = !state.noCaffeine || !store.caffeine;
@@ -1005,7 +1091,7 @@ function getFilteredStores(ignoreSearch = false) {
       .join(" ")
       .toLowerCase();
     const searchMatch = ignoreSearch || !state.search || searchText.includes(state.search);
-    return platformMatch && budgetMatch && groupMatch && caffeineMatch && openMatch && promoMatch && searchMatch;
+    return platformMatch && deliveryLinkMatch && budgetMatch && groupMatch && caffeineMatch && openMatch && promoMatch && searchMatch;
   });
 }
 
@@ -1333,21 +1419,25 @@ function renderHistory() {
 
 function renderMetrics() {
   const now = getTaipeiNowParts();
+  const verifiedStores = stores.filter(hasDirectDeliveryLink);
   els.budgetValue.textContent = state.budget;
-  els.storeCount.textContent = stores.length;
-  els.dualPlatformCount.textContent = stores.filter((store) => Object.keys(store.platforms).length > 1).length;
-  els.promoCount.textContent = stores.filter((store) => store.promotion).length;
-  els.openNowCount.textContent = stores.filter((store) => getStoreOpenState(store, now).isOpen === true).length;
+  els.storeCount.textContent = verifiedStores.length;
+  els.dualPlatformCount.textContent = verifiedStores.filter((store) => Object.keys(store.platforms).length > 1).length;
+  els.promoCount.textContent = verifiedStores.filter((store) => store.promotion).length;
+  els.openNowCount.textContent = verifiedStores.filter((store) => getStoreOpenState(store, now).isOpen === true).length;
   els.favoriteCount.textContent = state.favorites.size;
 }
 
 function renderSources() {
   const links = stores
+    .filter(hasDirectDeliveryLink)
     .flatMap((store) => {
-      const platformLinks = Object.entries(store.platforms).map(([platform, url]) => ({
-        label: `${store.name} · ${platformLabel(platform)}`,
-        url,
-      }));
+      const platformLinks = Object.entries(store.platforms)
+        .filter(([, url]) => isDirectDeliveryPageUrl(url))
+        .map(([platform, url]) => ({
+          label: `${store.name} · ${platformLabel(platform)}`,
+          url,
+        }));
       if (!store.promotion?.url) {
         return platformLinks;
       }
