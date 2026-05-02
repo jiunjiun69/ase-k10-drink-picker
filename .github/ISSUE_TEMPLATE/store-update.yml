@@ -1,0 +1,32 @@
+name: 店家資料更新
+description: 回報新店、歇業、暫停外送、營業時間或優惠異動
+title: "[店家更新] "
+labels:
+  - store-data
+body:
+  - type: dropdown
+    id: update-type
+    attributes:
+      label: 異動類型
+      options:
+        - 新增店家
+        - 店家歇業
+        - 暫停外送
+        - 營業時間更新
+        - 優惠更新
+    validations:
+      required: true
+  - type: input
+    id: store-name
+    attributes:
+      label: 店名
+      placeholder: 例如：某某茶 楠梓店
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: 平台連結或備註
+      placeholder: 貼上 Foodpanda/Uber Eats 連結、營業時間、優惠內容或你看到的狀態
+    validations:
+      required: true

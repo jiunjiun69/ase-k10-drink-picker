@@ -10,7 +10,7 @@ const moods = [
   { id: "new", label: "換口味", color: "#8159b4" },
 ];
 
-const stores = [
+let stores = [
   {
     id: "magu-innovation",
     name: "麻古茶坊 楠梓創新店",
@@ -74,14 +74,10 @@ const stores = [
         "https://www.ubereats.com/tw/store/%E6%B0%B4%E5%B7%B7%E8%8C%B6%E5%BC%84-%E9%AB%98%E9%9B%84%E6%A5%A0%E6%A2%93%E5%BA%97/2wD6CfbgQyWOubMVU82pdg",
     },
     promotion: {
-      label: "品牌券與買一送一線索",
-      detail: "公開優惠頁曾列折價券、瓶裝回購折扣與 LINE 好友買一送一線索，外送可用性需下單前確認。",
-      items: [
-        "滿 200 元贈 20 元折價券",
-        "回購瓶裝飲品每瓶現折 15 元",
-        "冬瓜烏買一送一 LINE 好友券線索",
-      ],
-      url: "https://twcoupon.com/brandshop-34964-%E6%B0%B4%E5%B7%B7%E8%8C%B6%E5%BC%84-%E9%AB%98%E9%9B%84%E5%B8%82-%E9%AB%98%E9%9B%84%E6%83%A0%E6%B0%91%E5%BA%97.html",
+      label: "Uber Eats 買一送一",
+      detail: "Uber Eats 公開頁面列出指定飲品買一送一，資格需依登入後地址確認。",
+      items: ["寒天愛玉小紫蘇買一送一 $90", "桔香小紫蘇買一送一 $85", "新顧客 0 元外送費線索"],
+      url: "https://www.ubereats.com/tw/store/%E6%B0%B4%E5%B7%B7%E8%8C%B6%E5%BC%84-%E9%AB%98%E9%9B%84%E6%A5%A0%E6%A2%93%E5%BA%97/2wD6CfbgQyWOubMVU82pdg",
       verified: DATA_VERSION,
     },
     source: "Uber Eats 公開頁面",
@@ -209,6 +205,8 @@ const stores = [
     picks: ["28茉粉角輕乳茶", "鮮調果茶", "奶茶系列"],
     platforms: {
       foodpanda: "https://www.foodpanda.com.tw/restaurant/h9hl/cocodu-ke-nan-zi-de-xian-dian",
+      ubereats:
+        "https://www.ubereats.com/tw/store/coco%E9%83%BD%E5%8F%AF-%E6%A5%A0%E6%A2%93%E5%BE%B7%E8%B3%A2/ExmQsdrUVpWag_wTZi5KvQ",
     },
     promotion: {
       label: "50% 指定品項",
@@ -319,6 +317,235 @@ const stores = [
     },
     source: "Foodpanda 公開頁面",
   },
+  {
+    id: "laolai-nanzi-station",
+    name: "老賴茶棧 楠梓站前店",
+    area: "楠梓新路",
+    address: "高雄市楠梓區楠梓新路150號",
+    rating: 5,
+    reviews: "100+",
+    budget: 70,
+    eta: "約 20-40 分",
+    mood: ["tea", "budget", "refreshing"],
+    caffeine: true,
+    group: true,
+    color: "#8b4f2f",
+    summary: "招牌紅茶與奶茶系適合想喝古早味的下午，靠近楠梓站前商圈。",
+    picks: ["招牌紅茶", "豆香紅茶", "太后牛乳"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E8%80%81%E8%B3%B4%E8%8C%B6%E6%A3%A7-%E6%A5%A0%E6%A2%93%E7%AB%99%E5%89%8D%E5%BA%97/3zDQKY-dVYOz6NNOuo12Fg",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "tea-manager-nanzi",
+    name: "茶總管紅茶冰 楠梓新店",
+    area: "楠梓新路",
+    address: "高雄市楠梓區楠梓新路163號",
+    rating: 4.9,
+    reviews: "100+",
+    budget: 55,
+    eta: "約 20-40 分",
+    mood: ["budget", "tea", "refreshing", "group"],
+    caffeine: true,
+    group: true,
+    color: "#b85b35",
+    summary: "大杯紅茶冰路線，想壓低預算或團訂很多杯時很實用。",
+    picks: ["古早味紅茶", "冬瓜茶", "鮮奶茶"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E8%8C%B6%E7%B8%BD%E7%AE%A1%E7%B4%85%E8%8C%B6%E5%86%B0-%E6%A5%A0%E6%A2%93%E6%96%B0%E5%BA%97/EH59tUW2SPG9p2LuOmUi6Q",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "blacktea-dad-nanzi",
+    name: "紅茶老爹 楠梓新店",
+    area: "楠梓新路",
+    address: "高雄市楠梓區楠梓新路158號",
+    rating: 4.9,
+    reviews: "95+",
+    budget: 60,
+    eta: "約 20-40 分",
+    mood: ["budget", "tea", "refreshing", "group"],
+    caffeine: true,
+    group: true,
+    color: "#a7432c",
+    summary: "紅茶冰與奶茶系選項簡單直接，適合需要快速決策的辦公室團單。",
+    picks: ["老爹紅茶", "老爹鮮奶茶", "冬瓜檸檬"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E7%B4%85%E8%8C%B6%E8%80%81%E7%88%B9-%E6%A5%A0%E6%A2%93%E6%96%B0%E5%BA%97/F5MYyvp2Tj2cGmDXsafidQ",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "ching-shin-qingfeng",
+    name: "清心福全 楠梓清豐店",
+    area: "清豐二路",
+    address: "高雄市楠梓區清豐二路78號",
+    rating: 4.9,
+    reviews: "130+",
+    budget: 70,
+    eta: "約 20-40 分",
+    mood: ["budget", "tea", "refreshing", "group"],
+    caffeine: true,
+    group: true,
+    color: "#168b80",
+    summary: "清豐一帶的清心候選，適合 K10 想找近一點又穩定的基本款。",
+    picks: ["優多綠茶", "烏龍綠茶", "鮮奶茶"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E6%B8%85%E5%BF%83%E7%A6%8F%E5%85%A8-%E6%A5%A0%E6%A2%93%E6%B8%85%E8%B1%90%E5%BA%97/4XaYo57HR5GcjRiFWwRwIg",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "milksha-dexian",
+    name: "迷客夏 高雄德賢店",
+    area: "德賢路",
+    address: "高雄市楠梓區德賢路145-2號",
+    rating: 4.9,
+    reviews: "700+",
+    budget: 95,
+    eta: "約 25-45 分",
+    mood: ["milk", "tea", "sweet", "group"],
+    caffeine: true,
+    group: true,
+    color: "#2c9c86",
+    summary: "鮮奶茶和拿鐵系強項，適合想喝奶味清楚一點的下午。",
+    picks: ["珍珠紅茶拿鐵", "伯爵紅茶拿鐵", "綠光牧場鮮奶茶"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E8%BF%B7%E5%AE%A2%E5%A4%8Fmilksha-%E9%AB%98%E9%9B%84%E5%BE%B7%E8%B3%A2%E5%BA%97/iZvTQ9pJQ5OcXo7CYT3MpA",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "chahai-dexian",
+    name: "茶海 CHA Hi 楠梓德賢店",
+    area: "德賢路",
+    address: "高雄市楠梓區德賢路261號",
+    rating: 4.9,
+    reviews: "50+",
+    budget: 80,
+    eta: "約 25-45 分",
+    mood: ["tea", "fruit", "new"],
+    caffeine: true,
+    group: false,
+    color: "#3676a8",
+    summary: "德賢路上的換口味候選，水果茶和茶飲都能顧到。",
+    picks: ["鮮萃茶", "水果茶", "鮮奶茶"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E8%8C%B6%E6%B5%B7cha-hi-%E6%A5%A0%E6%A2%93%E5%BE%B7%E8%B3%A2%E5%BA%97/W8VYgWhQWOS50fJRRF1irA",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "drinkstore-qingfeng",
+    name: "飲料店 楠梓清豐店",
+    area: "清豐二路",
+    address: "高雄市楠梓區清豐二路",
+    rating: 4.8,
+    reviews: "21+",
+    budget: 75,
+    eta: "約 20-40 分",
+    mood: ["new", "tea", "refreshing"],
+    caffeine: true,
+    group: false,
+    color: "#5d8fba",
+    summary: "名字很直白的清豐候選，適合想探索附近小店時抽。",
+    picks: ["招牌茶飲", "鮮奶茶", "水果茶"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E9%A3%B2%E6%96%99%E5%BA%97-%E6%A5%A0%E6%A2%93%E6%B8%85%E8%B1%90%E5%BA%97/HRWGyf8YU6WYxMnRXFpz-w",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "teatop-dexian",
+    name: "TEA TOP 楠梓德賢店",
+    area: "德賢路",
+    address: "高雄市楠梓區德賢路220巷",
+    rating: 4.8,
+    reviews: "500+",
+    budget: 85,
+    eta: "約 25-45 分",
+    mood: ["tea", "milk", "group"],
+    caffeine: true,
+    group: true,
+    color: "#7b6b40",
+    summary: "高山茶、奶茶和冬瓜系都有，團訂時容易找到大家都能接受的杯。",
+    picks: ["高山青茶", "珍珠奶茶", "冬瓜青茶"],
+    platforms: {
+      foodpanda: "https://www.foodpanda.com.tw/restaurant/p0uo/tea-top-nan-zi-de-xian-dian",
+    },
+    source: "Foodpanda 公開頁面",
+  },
+  {
+    id: "teajohnny-dexian",
+    name: "茶約翰手搖飲品 高雄楠梓店",
+    area: "德賢路",
+    address: "高雄市楠梓區德賢路",
+    rating: 4.8,
+    reviews: "100+",
+    budget: 80,
+    eta: "約 25-45 分",
+    mood: ["new", "tea", "fruit"],
+    caffeine: true,
+    group: false,
+    color: "#536c9f",
+    summary: "德賢路上偏探索型的手搖候選，適合想換一間沒喝過的時候。",
+    picks: ["招牌茶飲", "水果茶", "奶蓋茶"],
+    platforms: {
+      foodpanda: "https://www.foodpanda.com.tw/restaurant/q72c/cha-yue-han-shou-yao-yin-pin-gao-xiong-nan-zi-dian",
+    },
+    source: "Foodpanda 公開頁面",
+  },
+  {
+    id: "firsttea-houchang",
+    name: "先喝道 楠梓後昌店",
+    area: "後昌路",
+    address: "高雄市楠梓區後昌路760號",
+    rating: 4.9,
+    reviews: "240+",
+    budget: 90,
+    eta: "約 35-55 分",
+    mood: ["tea", "milk", "new", "group"],
+    caffeine: true,
+    group: true,
+    color: "#4d7b6d",
+    summary: "茶感路線更明顯，想喝不那麼甜的茶拿鐵可以列入遠一點的候選。",
+    picks: ["英式水果茶", "伯爵茶拿鐵", "蜜桃風味茶"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E5%85%88%E5%96%9D%E9%81%93-%E6%A5%A0%E6%A2%93%E5%BE%8C%E6%98%8C%E5%BA%97/5pJxZlpRUh2E6Wp6X7UpAQ",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "dancing-charm-houchang",
+    name: "舞動魅力 楠梓後昌店",
+    area: "後昌路",
+    address: "高雄市楠梓區後昌路",
+    rating: 4.8,
+    reviews: "100+",
+    budget: 85,
+    eta: "約 35-55 分",
+    mood: ["milk", "sweet", "new"],
+    caffeine: true,
+    group: false,
+    color: "#a64b75",
+    summary: "甜點感飲品和奶類較多，適合夜班或想喝甜一點的時候。",
+    picks: ["鮮奶茶", "奶蓋茶", "水果茶"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E8%88%9E%E5%8B%95%E9%AD%85%E5%8A%9B-%E6%A5%A0%E6%A2%93%E5%BE%8C%E6%98%8C%E5%BA%97/mxX3-f-aQZaLgCOWmf42_A",
+    },
+    source: "Uber Eats 公開頁面",
+  },
 ];
 
 const ALL_DAYS = [0, 1, 2, 3, 4, 5, 6];
@@ -386,11 +613,57 @@ const operatingInfo = {
     hoursLabel: "每日 09:00-23:00",
     hours: [{ days: ALL_DAYS, open: "09:00", close: "23:00" }],
   },
+  "laolai-nanzi-station": {
+    hoursLabel: "每日 10:00-21:00",
+    hours: [{ days: ALL_DAYS, open: "10:00", close: "21:00" }],
+  },
+  "tea-manager-nanzi": {
+    hoursLabel: "每日 00:00-24:00",
+    hours: [{ days: ALL_DAYS, open: "00:00", close: "24:00" }],
+  },
+  "blacktea-dad-nanzi": {
+    hoursLabel: "每日 10:00-22:00",
+    hours: [{ days: ALL_DAYS, open: "10:00", close: "22:00" }],
+  },
+  "ching-shin-qingfeng": {
+    hoursLabel: "每日 09:00-22:00",
+    hours: [{ days: ALL_DAYS, open: "09:00", close: "22:00" }],
+  },
+  "milksha-dexian": {
+    hoursLabel: "每日 10:00-21:30",
+    hours: [{ days: ALL_DAYS, open: "10:00", close: "21:30" }],
+  },
+  "chahai-dexian": {
+    hoursLabel: "每日 09:00-21:30",
+    hours: [{ days: ALL_DAYS, open: "09:00", close: "21:30" }],
+  },
+  "drinkstore-qingfeng": {
+    hoursLabel: "每日 10:00-21:00",
+    hours: [{ days: ALL_DAYS, open: "10:00", close: "21:00" }],
+  },
+  "teatop-dexian": {
+    hoursLabel: "每日 09:30-21:30",
+    hours: [{ days: ALL_DAYS, open: "09:30", close: "21:30" }],
+  },
+  "teajohnny-dexian": {
+    hoursLabel: "每日 10:00-21:30",
+    hours: [{ days: ALL_DAYS, open: "10:00", close: "21:30" }],
+  },
+  "firsttea-houchang": {
+    hoursLabel: "每日 10:00-21:30",
+    hours: [{ days: ALL_DAYS, open: "10:00", close: "21:30" }],
+  },
+  "dancing-charm-houchang": {
+    hoursLabel: "每日 00:00-24:00",
+    hours: [{ days: ALL_DAYS, open: "00:00", close: "24:00" }],
+  },
 };
 
-stores.forEach((store) => {
-  Object.assign(store, operatingInfo[store.id] || {});
-});
+const STORE_OVERRIDE_KEY = "k10StoresOverride";
+
+const builtInStores = cloneStores(stores);
+
+initializeStoreData();
 
 const state = {
   mood: "refreshing",
@@ -429,6 +702,15 @@ const els = {
   lastUpdated: document.querySelector("#lastUpdated"),
   todayLabel: document.querySelector("#todayLabel"),
   sourceLinks: document.querySelector("#sourceLinks"),
+  storeReportForm: document.querySelector("#storeReportForm"),
+  reportStoreName: document.querySelector("#reportStoreName"),
+  reportType: document.querySelector("#reportType"),
+  reportNote: document.querySelector("#reportNote"),
+  exportDataButton: document.querySelector("#exportDataButton"),
+  resetDataButton: document.querySelector("#resetDataButton"),
+  storeJsonInput: document.querySelector("#storeJsonInput"),
+  importDataButton: document.querySelector("#importDataButton"),
+  dataMessage: document.querySelector("#dataMessage"),
   themeToggle: document.querySelector("#themeToggle"),
 };
 
@@ -555,6 +837,147 @@ function bindEvents() {
     document.documentElement.classList.toggle("dark");
     localStorage.setItem("k10Theme", document.documentElement.classList.contains("dark") ? "dark" : "light");
   });
+
+  els.storeReportForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    openStoreReport();
+  });
+
+  els.exportDataButton.addEventListener("click", exportStoreData);
+
+  els.importDataButton.addEventListener("click", importStoreData);
+
+  els.resetDataButton.addEventListener("click", resetStoreData);
+}
+
+function initializeStoreData() {
+  const override = readStoreOverride();
+  stores = override || cloneStores(builtInStores);
+  applyOperatingInfo(stores);
+}
+
+function applyOperatingInfo(storeList) {
+  storeList.forEach((store) => {
+    Object.assign(store, operatingInfo[store.id] || {});
+  });
+}
+
+function readStoreOverride() {
+  try {
+    const raw = localStorage.getItem(STORE_OVERRIDE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return normalizeStoreList(parsed);
+  } catch {
+    localStorage.removeItem(STORE_OVERRIDE_KEY);
+    return null;
+  }
+}
+
+function normalizeStoreList(value) {
+  if (!Array.isArray(value)) {
+    throw new Error("店家 JSON 必須是陣列");
+  }
+
+  return value.map((store) => ({
+    id: store.id || slugify(store.name || `store-${Date.now()}`),
+    name: store.name || "未命名店家",
+    area: store.area || "未分類",
+    address: store.address || "地址待補",
+    rating: Number(store.rating || 4.8),
+    reviews: store.reviews || "待補",
+    budget: Number(store.budget || 80),
+    eta: store.eta || "請查平台",
+    mood: Array.isArray(store.mood) ? store.mood : ["new"],
+    caffeine: Boolean(store.caffeine),
+    group: Boolean(store.group),
+    color: store.color || "#2e6bb5",
+    summary: store.summary || "資料由本機匯入，請下單前確認平台狀態。",
+    picks: Array.isArray(store.picks) && store.picks.length ? store.picks : ["招牌飲品"],
+    platforms: store.platforms && typeof store.platforms === "object" ? store.platforms : {},
+    promotion: store.promotion || null,
+    source: store.source || "本機匯入",
+    hoursLabel: store.hoursLabel,
+    hours: Array.isArray(store.hours) ? store.hours : undefined,
+  }));
+}
+
+function exportStoreData() {
+  const data = JSON.stringify(stores, null, 2);
+  els.storeJsonInput.value = data;
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `k10-drink-stores-${dateKey()}.json`;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  setDataMessage("已匯出目前店家 JSON");
+}
+
+function importStoreData() {
+  try {
+    const imported = normalizeStoreList(JSON.parse(els.storeJsonInput.value));
+    localStorage.setItem(STORE_OVERRIDE_KEY, JSON.stringify(imported));
+    initializeStoreData();
+    state.current = pickStore(false);
+    renderAll();
+    setDataMessage(`已套用 ${stores.length} 間店到目前瀏覽器`);
+  } catch (error) {
+    setDataMessage(error.message || "JSON 格式不正確");
+  }
+}
+
+function resetStoreData() {
+  localStorage.removeItem(STORE_OVERRIDE_KEY);
+  initializeStoreData();
+  state.current = pickStore(false);
+  renderAll();
+  els.storeJsonInput.value = "";
+  setDataMessage("已重置為網站內建店家資料");
+}
+
+function openStoreReport() {
+  const name = els.reportStoreName.value.trim() || "未填店名";
+  const type = els.reportType.value;
+  const note = els.reportNote.value.trim() || "待補";
+  const body = [
+    `### 異動類型`,
+    type,
+    "",
+    `### 店名`,
+    name,
+    "",
+    `### 平台連結或備註`,
+    note,
+    "",
+    `### 回報來源`,
+    "K10 Drink Picker 資料更新表單",
+  ].join("\n");
+  const params = new URLSearchParams({
+    title: `[店家更新] ${type} - ${name}`,
+    body,
+  });
+  window.open(`https://github.com/jiunjiun69/ase-k10-drink-picker/issues/new?${params}`, "_blank", "noopener");
+  setDataMessage("已開啟 GitHub issue 回報頁");
+}
+
+function setDataMessage(message) {
+  els.dataMessage.textContent = message;
+}
+
+function cloneStores(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
+function slugify(value) {
+  return String(value)
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 function getFilteredStores(ignoreSearch = false) {
@@ -936,7 +1359,7 @@ function renderSources() {
         },
       ];
     })
-    .slice(0, 24);
+    .slice(0, 48);
 
   els.sourceLinks.innerHTML = "";
   links.forEach((source) => {
