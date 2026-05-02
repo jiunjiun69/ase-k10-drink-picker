@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="日月光高雄 K10 上班飲料決策器，整理 Foodpanda 與 Uber Eats 可查到的楠梓外送飲料候選。"
+    />
+    <title>K10 上班飲料決策器</title>
+    <link rel="icon" href="assets/drink-pin.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar" aria-label="頁首">
+        <a class="brand" href="#picker" aria-label="回到推薦區">
+          <img src="assets/drink-pin.svg" alt="" class="brand-mark" />
+          <span>
+            <strong>K10 Drink Picker</strong>
+            <small>ASE Kaohsiung</small>
+          </span>
+        </a>
+        <nav class="top-actions" aria-label="快速切換">
+          <a href="#stores">店家</a>
+          <a href="#history">紀錄</a>
+          <button class="icon-button" id="themeToggle" type="button" aria-label="切換深色模式" title="切換深色模式">
+            <span aria-hidden="true">◐</span>
+          </button>
+        </nav>
+      </header>
+
+      <main>
+        <section class="workspace" id="picker">
+          <div class="decision-panel" aria-live="polite">
+            <div class="panel-kicker">
+              <span class="live-dot" aria-hidden="true"></span>
+              <span id="todayLabel">今日推薦</span>
+            </div>
+            <h1>上班喝哪間</h1>
+            <article class="recommendation-card" id="recommendationCard">
+              <div>
+                <p class="muted">正在整理候選名單</p>
+                <h2>準備抽一杯</h2>
+              </div>
+            </article>
+            <div class="decision-actions">
+              <button class="primary-action" id="drawButton" type="button">
+                <span aria-hidden="true">↻</span>
+                重新抽
+              </button>
+              <button class="ghost-action" id="savePickButton" type="button">
+                <span aria-hidden="true">✓</span>
+                今天就它
+              </button>
+            </div>
+          </div>
+
+          <aside class="control-panel" aria-label="篩選條件">
+            <div class="time-card">
+              <span>公司位置</span>
+              <strong>日月光高雄 K10</strong>
+              <small>高雄市楠梓區中一街 5 號</small>
+            </div>
+
+            <fieldset>
+              <legend>平台</legend>
+              <label class="check-pill">
+                <input type="checkbox" name="platform" value="foodpanda" checked />
+                <span>foodpanda</span>
+              </label>
+              <label class="check-pill">
+                <input type="checkbox" name="platform" value="ubereats" checked />
+                <span>Uber Eats</span>
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>今天想喝</legend>
+              <div class="chip-grid" id="moodChips"></div>
+            </fieldset>
+
+            <fieldset>
+              <legend>預算</legend>
+              <label class="range-row">
+                <span>$<output id="budgetValue">85</output></span>
+                <input id="budgetRange" type="range" min="45" max="120" value="85" step="5" />
+              </label>
+            </fieldset>
+
+            <div class="toggle-stack">
+              <label class="switch-row">
+                <span>多人團訂</span>
+                <input id="groupToggle" type="checkbox" checked />
+              </label>
+              <label class="switch-row">
+                <span>避開咖啡因</span>
+                <input id="noCaffeineToggle" type="checkbox" />
+              </label>
+            </div>
+          </aside>
+        </section>
+
+        <section class="insight-band" aria-label="候選摘要">
+          <div>
+            <span class="metric-value" id="storeCount">0</span>
+            <span class="metric-label">候選店家</span>
+          </div>
+          <div>
+            <span class="metric-value" id="dualPlatformCount">0</span>
+            <span class="metric-label">雙平台可查</span>
+          </div>
+          <div>
+            <span class="metric-value" id="favoriteCount">0</span>
+            <span class="metric-label">我的愛店</span>
+          </div>
+          <div>
+            <span class="metric-value" id="lastUpdated">05/02</span>
+            <span class="metric-label">資料更新</span>
+          </div>
+        </section>
+
+        <section class="stores-section" id="stores">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Near K10</p>
+              <h2>外送候選清單</h2>
+            </div>
+            <label class="search-box">
+              <span aria-hidden="true">⌕</span>
+              <input id="searchInput" type="search" placeholder="搜尋店名、飲品、路名" />
+            </label>
+          </div>
+          <div class="store-grid" id="storeGrid"></div>
+        </section>
+
+        <section class="history-section" id="history">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Office Rhythm</p>
+              <h2>最近喝過</h2>
+            </div>
+            <button class="ghost-action compact" id="clearHistoryButton" type="button">
+              <span aria-hidden="true">×</span>
+              清空
+            </button>
+          </div>
+          <div class="history-list" id="historyList"></div>
+        </section>
+
+        <section class="source-note">
+          <h2>資料來源</h2>
+          <p>
+            店家候選依 2026-05-02 可查到的 Foodpanda、Uber Eats 公開頁面整理；平台外送範圍、營業時間、
+            外送費與優惠會隨時間和定位變動，下單前請以平台 App 的即時畫面為準。
+          </p>
+          <div class="source-links" id="sourceLinks"></div>
+        </section>
+      </main>
+    </div>
+
+    <template id="storeCardTemplate">
+      <article class="store-card">
+        <div class="store-card-top">
+          <div class="store-avatar" aria-hidden="true"></div>
+          <button class="favorite-button" type="button" aria-label="加入愛店" title="加入愛店">☆</button>
+        </div>
+        <div class="store-copy">
+          <p class="store-meta"></p>
+          <h3></h3>
+          <p class="store-address"></p>
+          <p class="store-summary"></p>
+        </div>
+        <div class="tag-row"></div>
+        <div class="platform-row"></div>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>

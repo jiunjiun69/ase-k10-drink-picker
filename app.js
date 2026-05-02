@@ -1,0 +1,635 @@
+const DATA_VERSION = "2026-05-02";
+
+const moods = [
+  { id: "refreshing", label: "解暑", color: "#168b80" },
+  { id: "milk", label: "奶茶", color: "#9b6a3a" },
+  { id: "fruit", label: "水果", color: "#e0783c" },
+  { id: "tea", label: "茶感", color: "#2e6bb5" },
+  { id: "sweet", label: "甜一點", color: "#c45562" },
+  { id: "budget", label: "省錢", color: "#6f8f36" },
+  { id: "new", label: "換口味", color: "#8159b4" },
+];
+
+const stores = [
+  {
+    id: "magu-innovation",
+    name: "麻古茶坊 楠梓創新店",
+    area: "創新路",
+    address: "高雄市楠梓區創新路21號",
+    rating: 4.9,
+    reviews: "370+",
+    budget: 85,
+    eta: "約 20-35 分",
+    mood: ["fruit", "tea", "refreshing", "group"],
+    caffeine: true,
+    group: true,
+    color: "#e0783c",
+    summary: "果粒茶、柳橙綠和紅茶拿鐵都穩，早上到晚上都容易納入團訂。",
+    picks: ["翡翠柳橙", "波霸紅茶拿鐵", "百香雙Q果"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E9%BA%BB%E5%8F%A4%E8%8C%B6%E5%9D%8A-%E6%A5%A0%E6%A2%93%E5%89%B5%E6%96%B0%E5%BA%97/DC4QpXR2UKCD3369SoheGg",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "chatanghui-nanzi",
+    name: "茶湯會 楠梓新店",
+    area: "楠梓新路",
+    address: "高雄市楠梓區楠梓新路194號1樓",
+    rating: 4.9,
+    reviews: "2000+",
+    budget: 80,
+    eta: "約 20-40 分",
+    mood: ["tea", "milk", "group"],
+    caffeine: true,
+    group: true,
+    color: "#2e6bb5",
+    summary: "茶味派的安全牌，觀音拿鐵和翡翠綠茶適合多人各自選甜度冰塊。",
+    picks: ["觀音珍珠拿鐵", "特級翡翠綠茶", "蔗香紅茶"],
+    platforms: {
+      foodpanda: "https://www.foodpanda.com.tw/restaurant/d5yb/cha-tang-hui-nan-zi-xin-dian",
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E8%8C%B6%E6%B9%AF%E6%9C%83-%E6%A5%A0%E6%A2%93%E6%96%B0%E5%BA%97/SJgzjIzCTo2pAepzB3GzRg",
+    },
+    source: "Foodpanda / Uber Eats 公開頁面",
+  },
+  {
+    id: "waterlane-nanzi",
+    name: "水巷茶弄 高雄楠梓店",
+    area: "楠梓新路",
+    address: "高雄市楠梓區楠梓新路218號",
+    rating: 4.9,
+    reviews: "1000+",
+    budget: 90,
+    eta: "約 20-40 分",
+    mood: ["refreshing", "fruit", "sweet", "new", "group"],
+    caffeine: false,
+    group: true,
+    color: "#42a5a1",
+    summary: "愛玉、小紫蘇和檸檬蘆薈很適合高雄熱天，想避開咖啡因時很好用。",
+    picks: ["寒天愛玉小紫蘇", "桔香小紫蘇", "檸檬蜂蜜蘆薈"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E6%B0%B4%E5%B7%B7%E8%8C%B6%E5%BC%84-%E9%AB%98%E9%9B%84%E6%A5%A0%E6%A2%93%E5%BA%97/2wD6CfbgQyWOubMVU82pdg",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "sugarcane-mom",
+    name: "甘蔗の媽媽 楠梓站前店",
+    area: "楠梓新路",
+    address: "高雄市楠梓區楠梓新路153號",
+    rating: 4.9,
+    reviews: "500+",
+    budget: 80,
+    eta: "約 20-40 分",
+    mood: ["refreshing", "fruit", "sweet", "new"],
+    caffeine: false,
+    group: false,
+    color: "#6f8f36",
+    summary: "甘蔗青茶、甘蔗檸檬和原汁走清爽路線，下午覺得乾的時候很合。",
+    picks: ["招牌四季甘蔗青茶", "甘蔗檸檬", "新鮮甘蔗原汁"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E7%94%98%E8%94%97%E3%81%AE%E5%AA%BD%E5%AA%BD-%E6%A5%A0%E6%A2%93%E7%AB%99%E5%89%8D%E5%BA%97/JObpgAd6Xsquix1ibqDvug",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "unocha-tuku",
+    name: "烏弄 楠梓土庫店",
+    area: "清豐二路",
+    address: "高雄市楠梓區清豐二路88號",
+    rating: 4.9,
+    reviews: "190+",
+    budget: 85,
+    eta: "約 25-45 分",
+    mood: ["tea", "milk", "refreshing", "group"],
+    caffeine: true,
+    group: true,
+    color: "#946c43",
+    summary: "金萱、冬片和紅茶拿鐵表現穩，想喝有茶香的奶類可以抽它。",
+    picks: ["金萱烏龍拿鐵", "玉霞紅茶拿鐵", "檸檬冬片仔"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E7%83%8F%E5%BC%84-%E6%A5%A0%E6%A2%93%E5%9C%9F%E5%BA%AB%E5%BA%97/Tlhj-WfVXNWzcNKXcRwdOA",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "ninetea-dexian",
+    name: "拾汣茶屋 楠梓德賢店",
+    area: "德賢路",
+    address: "高雄市楠梓區德賢路241號",
+    rating: 4.9,
+    reviews: "500+",
+    budget: 90,
+    eta: "約 25-45 分",
+    mood: ["new", "milk", "fruit", "sweet", "group"],
+    caffeine: true,
+    group: true,
+    color: "#8159b4",
+    summary: "品項比較有記憶點，粉粿、港奶、抹茶和水果茶都能照顧到不同同事。",
+    picks: ["小王秘蜜粿果綠", "港式奶茶", "蜜桃桂花烏"],
+    platforms: {
+      foodpanda: "https://www.foodpanda.com.tw/restaurant/zr04/shi-cha-wu-nan-zi-de-xian-dian",
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E6%8B%BE%E6%B1%A3%E8%8C%B6%E5%B1%8B-%E6%A5%A0%E6%A2%93%E5%BE%B7%E8%B3%A2%E5%BA%97/mibnUWnbWs-TqVa_dZfHTQ",
+    },
+    source: "Foodpanda / Uber Eats 公開頁面",
+  },
+  {
+    id: "ching-shin-dexian",
+    name: "清心福全 楠梓德賢店",
+    area: "德賢路",
+    address: "高雄市楠梓區德賢路232號",
+    rating: 5,
+    reviews: "220+",
+    budget: 70,
+    eta: "約 25-45 分",
+    mood: ["budget", "tea", "refreshing", "group"],
+    caffeine: true,
+    group: true,
+    color: "#168b80",
+    summary: "預算友善又好分杯，優多綠、蜂蜜烏龍和鮮奶茶都是不容易踩雷的選項。",
+    picks: ["優多綠茶", "蜂蜜烏龍", "鮮奶茶"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E6%B8%85%E5%BF%83%E7%A6%8F%E5%85%A8-%E6%A5%A0%E6%A2%93%E5%BE%B7%E8%B3%A2%E5%BA%97/ejKcl7ltXK-aMQz1ChgTuQ",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "sugarstand-dexian",
+    name: "蔗一攤 楠梓德賢店",
+    area: "德賢路",
+    address: "高雄市楠梓區德賢路171號1樓",
+    rating: 4.9,
+    reviews: "72+",
+    budget: 75,
+    eta: "約 25-45 分",
+    mood: ["refreshing", "fruit", "sweet", "budget"],
+    caffeine: false,
+    group: false,
+    color: "#83a33b",
+    summary: "甘蔗系另一個好選擇，德賢路商圈營業到較晚，夜班前也能考慮。",
+    picks: ["甘蔗青茶", "鮮甘蔗汁", "冬瓜檸檬"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E8%94%97%E4%B8%80%E6%94%A4-%E6%A5%A0%E6%A2%93%E5%BE%B7%E8%B3%A2%E5%BA%97/Ceped7cHWz-irE2kDwFogQ",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "coco-dexian",
+    name: "CoCo都可 楠梓德賢店",
+    area: "德賢路",
+    address: "高雄市楠梓區德賢路商圈",
+    rating: 4.9,
+    reviews: "1000+",
+    budget: 75,
+    eta: "約 25-45 分",
+    mood: ["budget", "milk", "fruit", "group"],
+    caffeine: true,
+    group: true,
+    color: "#c45562",
+    summary: "Foodpanda 常見優惠型候選，想用活動湊團或買多杯時可以先看它。",
+    picks: ["28茉粉角輕乳茶", "鮮調果茶", "奶茶系列"],
+    platforms: {
+      foodpanda: "https://www.foodpanda.com.tw/restaurant/h9hl/cocodu-ke-nan-zi-de-xian-dian",
+    },
+    source: "Foodpanda 公開頁面",
+  },
+  {
+    id: "zhenzhudan-dexian",
+    name: "珍煮丹 楠梓德賢店",
+    area: "德賢路",
+    address: "高雄市楠梓區德賢路商圈",
+    rating: 4.9,
+    reviews: "3000+",
+    budget: 85,
+    eta: "約 25-45 分",
+    mood: ["milk", "sweet", "group"],
+    caffeine: true,
+    group: true,
+    color: "#9b6a3a",
+    summary: "黑糖珍珠鮮奶系的熱門選擇，想喝甜一點或珍珠控同事多時很適合。",
+    picks: ["黑糖珍珠鮮奶", "琥珀烏龍拿鐵", "黑糖綿芋鮮奶"],
+    platforms: {
+      foodpanda: "https://www.foodpanda.com.tw/restaurant/n8ua/zhen-zhu-dan-nan-zi-de-xian-dian",
+    },
+    source: "Foodpanda 公開頁面",
+  },
+  {
+    id: "mumu-nanzi",
+    name: "沐沐MUMU 高雄楠梓店",
+    area: "宏毅一路",
+    address: "高雄市楠梓區宏毅一路6號",
+    rating: 5,
+    reviews: "12+",
+    budget: 85,
+    eta: "約 15-30 分",
+    mood: ["new", "milk", "sweet"],
+    caffeine: true,
+    group: false,
+    color: "#c45562",
+    summary: "離園區感覺近、口味偏有特色，適合想跳脫連鎖安全牌的中午。",
+    picks: ["沐沐紅玉", "紫米拿鐵", "醇奶紅玉"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E6%B2%90%E6%B2%90mumu-%E9%AB%98%E9%9B%84%E6%A5%A0%E6%A2%93%E5%BA%97/79jnKSc3VYKPoaRvKLKy6A",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "fiftylan-lequn",
+    name: "50嵐 楠梓樂群店",
+    area: "樂群路",
+    address: "高雄市楠梓區樂群路152號",
+    rating: 4.8,
+    reviews: "500+",
+    budget: 70,
+    eta: "約 25-45 分",
+    mood: ["budget", "tea", "milk", "group"],
+    caffeine: true,
+    group: true,
+    color: "#e7b742",
+    summary: "經典茶飲和奶茶選項完整，大家意見很分散時可以用它收斂。",
+    picks: ["四季春", "珍珠奶茶", "冰淇淋紅茶"],
+    platforms: {
+      foodpanda: "https://www.foodpanda.com.tw/restaurant/g62j/50lan-nan-zi-le-qun-dian",
+    },
+    source: "Foodpanda 公開頁面",
+  },
+];
+
+const state = {
+  mood: "refreshing",
+  budget: 85,
+  platforms: new Set(["foodpanda", "ubereats"]),
+  groupOnly: true,
+  noCaffeine: false,
+  search: "",
+  current: null,
+  favorites: new Set(JSON.parse(localStorage.getItem("k10Favorites") || "[]")),
+  history: JSON.parse(localStorage.getItem("k10History") || "[]"),
+};
+
+const els = {
+  moodChips: document.querySelector("#moodChips"),
+  budgetRange: document.querySelector("#budgetRange"),
+  budgetValue: document.querySelector("#budgetValue"),
+  groupToggle: document.querySelector("#groupToggle"),
+  noCaffeineToggle: document.querySelector("#noCaffeineToggle"),
+  searchInput: document.querySelector("#searchInput"),
+  storeGrid: document.querySelector("#storeGrid"),
+  recommendationCard: document.querySelector("#recommendationCard"),
+  drawButton: document.querySelector("#drawButton"),
+  savePickButton: document.querySelector("#savePickButton"),
+  clearHistoryButton: document.querySelector("#clearHistoryButton"),
+  historyList: document.querySelector("#historyList"),
+  storeCount: document.querySelector("#storeCount"),
+  dualPlatformCount: document.querySelector("#dualPlatformCount"),
+  favoriteCount: document.querySelector("#favoriteCount"),
+  lastUpdated: document.querySelector("#lastUpdated"),
+  todayLabel: document.querySelector("#todayLabel"),
+  sourceLinks: document.querySelector("#sourceLinks"),
+  themeToggle: document.querySelector("#themeToggle"),
+};
+
+const template = document.querySelector("#storeCardTemplate");
+
+function init() {
+  const savedTheme = localStorage.getItem("k10Theme");
+  if (savedTheme === "dark") {
+    document.documentElement.classList.add("dark");
+  }
+
+  els.todayLabel.textContent = new Intl.DateTimeFormat("zh-TW", {
+    weekday: "long",
+    month: "numeric",
+    day: "numeric",
+  }).format(new Date());
+  els.lastUpdated.textContent = DATA_VERSION.slice(5).replace("-", "/");
+
+  renderMoodChips();
+  bindEvents();
+  state.current = pickStore(true);
+  renderAll();
+}
+
+function renderMoodChips() {
+  els.moodChips.innerHTML = "";
+  moods.forEach((mood) => {
+    const button = document.createElement("button");
+    button.className = "chip";
+    button.type = "button";
+    button.dataset.mood = mood.id;
+    button.style.setProperty("--tag-color", mood.color);
+    button.textContent = mood.label;
+    if (state.mood === mood.id) {
+      button.classList.add("active");
+    }
+    els.moodChips.append(button);
+  });
+}
+
+function bindEvents() {
+  els.moodChips.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-mood]");
+    if (!button) return;
+    state.mood = button.dataset.mood;
+    state.current = pickStore(false);
+    renderAll();
+  });
+
+  els.budgetRange.addEventListener("input", () => {
+    state.budget = Number(els.budgetRange.value);
+    state.current = pickStore(false);
+    renderAll();
+  });
+
+  document.querySelectorAll("input[name='platform']").forEach((input) => {
+    input.addEventListener("change", () => {
+      const selected = [...document.querySelectorAll("input[name='platform']:checked")].map((item) => item.value);
+      state.platforms = new Set(selected.length ? selected : ["foodpanda", "ubereats"]);
+      if (!selected.length) {
+        document.querySelectorAll("input[name='platform']").forEach((item) => {
+          item.checked = true;
+        });
+      }
+      state.current = pickStore(false);
+      renderAll();
+    });
+  });
+
+  els.groupToggle.addEventListener("change", () => {
+    state.groupOnly = els.groupToggle.checked;
+    state.current = pickStore(false);
+    renderAll();
+  });
+
+  els.noCaffeineToggle.addEventListener("change", () => {
+    state.noCaffeine = els.noCaffeineToggle.checked;
+    state.current = pickStore(false);
+    renderAll();
+  });
+
+  els.searchInput.addEventListener("input", () => {
+    state.search = els.searchInput.value.trim().toLowerCase();
+    renderStores();
+  });
+
+  els.drawButton.addEventListener("click", () => {
+    state.current = pickStore(false, true);
+    renderAll();
+  });
+
+  els.savePickButton.addEventListener("click", () => {
+    if (!state.current) return;
+    const item = {
+      id: state.current.id,
+      name: state.current.name,
+      pick: state.current.picks[0],
+      time: new Date().toISOString(),
+    };
+    state.history = [item, ...state.history.filter((entry) => entry.id !== item.id)].slice(0, 8);
+    localStorage.setItem("k10History", JSON.stringify(state.history));
+    renderHistory();
+  });
+
+  els.clearHistoryButton.addEventListener("click", () => {
+    state.history = [];
+    localStorage.removeItem("k10History");
+    renderHistory();
+  });
+
+  els.themeToggle.addEventListener("click", () => {
+    document.documentElement.classList.toggle("dark");
+    localStorage.setItem("k10Theme", document.documentElement.classList.contains("dark") ? "dark" : "light");
+  });
+}
+
+function getFilteredStores(ignoreSearch = false) {
+  return stores.filter((store) => {
+    const platformMatch = Object.keys(store.platforms).some((platform) => state.platforms.has(platform));
+    const budgetMatch = store.budget <= state.budget;
+    const groupMatch = !state.groupOnly || store.group;
+    const caffeineMatch = !state.noCaffeine || !store.caffeine;
+    const searchText = [store.name, store.area, store.address, store.summary, ...store.picks, ...store.mood]
+      .join(" ")
+      .toLowerCase();
+    const searchMatch = ignoreSearch || !state.search || searchText.includes(state.search);
+    return platformMatch && budgetMatch && groupMatch && caffeineMatch && searchMatch;
+  });
+}
+
+function pickStore(seedByDate = false, extraRandom = false) {
+  const candidates = getFilteredStores(true);
+  const pool = candidates.length ? candidates : stores;
+  const scored = pool.map((store) => ({
+    store,
+    score: getScore(store) + (extraRandom ? Math.random() * 3 : seededRandom(`${store.id}-${state.mood}-${dateKey()}`) * 1.4),
+  }));
+  scored.sort((a, b) => b.score - a.score);
+
+  if (seedByDate) {
+    return scored[0]?.store || stores[0];
+  }
+
+  const top = scored.slice(0, Math.min(4, scored.length));
+  const total = top.reduce((sum, item) => sum + Math.max(item.score, 0.1), 0);
+  let cursor = Math.random() * total;
+  for (const item of top) {
+    cursor -= Math.max(item.score, 0.1);
+    if (cursor <= 0) return item.store;
+  }
+  return top[0]?.store || stores[0];
+}
+
+function getScore(store) {
+  let score = store.rating * 2;
+  if (store.mood.includes(state.mood)) score += 4;
+  if (store.group && state.groupOnly) score += 1.5;
+  if (!store.caffeine && state.noCaffeine) score += 3;
+  if (Object.keys(store.platforms).length > 1) score += 1.2;
+  if (state.favorites.has(store.id)) score += 1;
+  score += Math.max(0, (state.budget - store.budget) / 14);
+  if (state.history.slice(0, 3).some((entry) => entry.id === store.id)) score -= 4;
+  return score;
+}
+
+function renderAll() {
+  renderMoodChips();
+  renderRecommendation();
+  renderStores();
+  renderHistory();
+  renderMetrics();
+  renderSources();
+}
+
+function renderRecommendation() {
+  const store = state.current || pickStore(true);
+  const platformNames = Object.keys(store.platforms).map(platformLabel).join(" / ");
+  els.recommendationCard.innerHTML = `
+    <div class="recommendation-main">
+      <p class="muted">${store.area} · ${platformNames}</p>
+      <h2>${store.name}</h2>
+      <p>${store.summary}</p>
+    </div>
+    <div class="recommendation-details">
+      <div class="detail-tile">
+        <span>先點這杯</span>
+        <strong>${store.picks[0]}</strong>
+      </div>
+      <div class="detail-tile">
+        <span>預估單杯</span>
+        <strong>$${store.budget} 內</strong>
+      </div>
+      <div class="detail-tile">
+        <span>平台評分</span>
+        <strong>${store.rating.toFixed(1)} · ${store.reviews}</strong>
+      </div>
+    </div>
+    <div class="platform-row">
+      ${Object.entries(store.platforms)
+        .map(
+          ([platform, url]) =>
+            `<a class="platform-link ${platform}" href="${url}" target="_blank" rel="noreferrer">${platformLabel(platform)}</a>`,
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function renderStores() {
+  const visibleStores = getFilteredStores();
+  els.storeGrid.innerHTML = "";
+
+  if (!visibleStores.length) {
+    const empty = document.createElement("p");
+    empty.className = "empty-state";
+    empty.textContent = "這組條件暫時沒有候選店家";
+    els.storeGrid.append(empty);
+    return;
+  }
+
+  visibleStores.forEach((store) => {
+    const node = template.content.firstElementChild.cloneNode(true);
+    node.style.setProperty("--avatar", store.color);
+    node.querySelector(".store-avatar").textContent = store.name.slice(0, 1);
+    node.querySelector(".store-meta").textContent = `${store.area} · ${store.rating.toFixed(1)} · ${store.reviews}`;
+    node.querySelector("h3").textContent = store.name;
+    node.querySelector(".store-address").textContent = store.address;
+    node.querySelector(".store-summary").textContent = store.summary;
+
+    const favorite = node.querySelector(".favorite-button");
+    favorite.classList.toggle("active", state.favorites.has(store.id));
+    favorite.textContent = state.favorites.has(store.id) ? "★" : "☆";
+    favorite.addEventListener("click", () => toggleFavorite(store.id));
+
+    const tagRow = node.querySelector(".tag-row");
+    [...store.picks.slice(0, 2), store.group ? "團訂友善" : "少杯數"].forEach((tag, index) => {
+      const pill = document.createElement("span");
+      pill.className = "tag";
+      pill.style.setProperty("--tag-color", index === 0 ? store.color : "#2e6bb5");
+      pill.textContent = tag;
+      tagRow.append(pill);
+    });
+
+    const platformRow = node.querySelector(".platform-row");
+    Object.entries(store.platforms).forEach(([platform, url]) => {
+      const link = document.createElement("a");
+      link.className = `platform-link ${platform}`;
+      link.href = url;
+      link.target = "_blank";
+      link.rel = "noreferrer";
+      link.textContent = platformLabel(platform);
+      platformRow.append(link);
+    });
+
+    els.storeGrid.append(node);
+  });
+}
+
+function renderHistory() {
+  els.historyList.innerHTML = "";
+  if (!state.history.length) {
+    const empty = document.createElement("p");
+    empty.className = "history-empty";
+    empty.textContent = "還沒有飲料紀錄";
+    els.historyList.append(empty);
+    return;
+  }
+
+  state.history.forEach((entry) => {
+    const row = document.createElement("div");
+    row.className = "history-item";
+    const date = new Intl.DateTimeFormat("zh-TW", {
+      month: "numeric",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(new Date(entry.time));
+    row.innerHTML = `<strong>${entry.name}</strong><span>${date}</span>`;
+    els.historyList.append(row);
+  });
+}
+
+function renderMetrics() {
+  els.budgetValue.textContent = state.budget;
+  els.storeCount.textContent = stores.length;
+  els.dualPlatformCount.textContent = stores.filter((store) => Object.keys(store.platforms).length > 1).length;
+  els.favoriteCount.textContent = state.favorites.size;
+}
+
+function renderSources() {
+  const links = stores
+    .flatMap((store) =>
+      Object.entries(store.platforms).map(([platform, url]) => ({
+        label: `${store.name} · ${platformLabel(platform)}`,
+        url,
+      })),
+    )
+    .slice(0, 18);
+
+  els.sourceLinks.innerHTML = "";
+  links.forEach((source) => {
+    const link = document.createElement("a");
+    link.href = source.url;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    link.textContent = source.label;
+    els.sourceLinks.append(link);
+  });
+}
+
+function toggleFavorite(id) {
+  if (state.favorites.has(id)) {
+    state.favorites.delete(id);
+  } else {
+    state.favorites.add(id);
+  }
+  localStorage.setItem("k10Favorites", JSON.stringify([...state.favorites]));
+  renderAll();
+}
+
+function platformLabel(platform) {
+  return platform === "foodpanda" ? "foodpanda" : "Uber Eats";
+}
+
+function dateKey() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function seededRandom(input) {
+  let hash = 2166136261;
+  for (let index = 0; index < input.length; index += 1) {
+    hash ^= input.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return ((hash >>> 0) % 10000) / 10000;
+}
+
+init();

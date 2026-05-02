@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">Drink map pin</title>
+  <desc id="desc">A tea cup inside a map pin.</desc>
+  <defs>
+    <linearGradient id="g" x1="18" x2="82" y1="12" y2="86" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2bb3a3"/>
+      <stop offset="0.55" stop-color="#3f7fca"/>
+      <stop offset="1" stop-color="#f2a24a"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#g)" d="M48 6c-18.2 0-33 14.4-33 32.2 0 24 29.4 49.4 30.7 50.5a3.6 3.6 0 0 0 4.6 0C51.6 87.6 81 62.2 81 38.2 81 20.4 66.2 6 48 6Z"/>
+  <path fill="#fff" d="M31.3 34.5h29.6l-2.7 24.8a8.6 8.6 0 0 1-8.5 7.6H42.5a8.6 8.6 0 0 1-8.5-7.6l-2.7-24.8Z"/>
+  <path fill="#17324d" d="M29.5 27.8c0-2 1.6-3.6 3.6-3.6h29.8c2 0 3.6 1.6 3.6 3.6v3.6h-37v-3.6Z"/>
+  <path fill="#f2a24a" d="M38.2 43.6h19.6l-1.3 12a6.1 6.1 0 0 1-6.1 5.5h-4.8a6.1 6.1 0 0 1-6.1-5.5l-1.3-12Z"/>
+  <path fill="#17324d" d="M44.2 16.5a2.8 2.8 0 0 1 5.4 1.4l-3.3 12.5h-5.8l3.7-13.9Z"/>
+  <circle cx="43" cy="51" r="2.2" fill="#fff"/>
+  <circle cx="50" cy="55" r="2.2" fill="#fff"/>
+  <circle cx="47" cy="47" r="1.8" fill="#fff"/>
+</svg>
