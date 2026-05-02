@@ -253,6 +253,7 @@ h1 {
 .store-meta,
 .store-address,
 .metric-label,
+.promo-note,
 .source-note p,
 .history-empty {
   color: var(--muted);
@@ -265,7 +266,7 @@ h1 {
 
 .recommendation-details {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -445,7 +446,7 @@ legend {
 
 .insight-band {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1px;
   overflow: hidden;
   margin: 18px 0;
@@ -583,6 +584,21 @@ legend {
 
 .store-summary {
   line-height: 1.55;
+}
+
+.promo-note {
+  display: none;
+  padding: 10px 11px;
+  border: 1px solid color-mix(in srgb, var(--amber) 45%, var(--line));
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--amber) 12%, var(--surface));
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.promo-note.active {
+  display: block;
 }
 
 .tag {

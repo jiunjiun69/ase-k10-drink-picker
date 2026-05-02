@@ -73,6 +73,12 @@ const stores = [
       ubereats:
         "https://www.ubereats.com/tw/store/%E6%B0%B4%E5%B7%B7%E8%8C%B6%E5%BC%84-%E9%AB%98%E9%9B%84%E6%A5%A0%E6%A2%93%E5%BA%97/2wD6CfbgQyWOubMVU82pdg",
     },
+    promotion: {
+      label: "品牌優惠線索",
+      detail: "公開優惠頁曾列折價券與買一送一訊息，是否可套用外送需下單前確認。",
+      url: "https://twcoupon.com/brandshop-34964-%E6%B0%B4%E5%B7%B7%E8%8C%B6%E5%BC%84-%E9%AB%98%E9%9B%84%E5%B8%82-%E9%AB%98%E9%9B%84%E6%83%A0%E6%B0%91%E5%BA%97.html",
+      verified: DATA_VERSION,
+    },
     source: "Uber Eats 公開頁面",
   },
   {
@@ -199,6 +205,12 @@ const stores = [
     platforms: {
       foodpanda: "https://www.foodpanda.com.tw/restaurant/h9hl/cocodu-ke-nan-zi-de-xian-dian",
     },
+    promotion: {
+      label: "Foodpanda 活動候選",
+      detail: "連鎖店常搭配平台活動，適合先查買多杯、折扣券或免外送門檻。",
+      url: "https://www.foodpanda.com.tw/restaurant/h9hl/cocodu-ke-nan-zi-de-xian-dian",
+      verified: DATA_VERSION,
+    },
     source: "Foodpanda 公開頁面",
   },
   {
@@ -218,6 +230,12 @@ const stores = [
     picks: ["黑糖珍珠鮮奶", "琥珀烏龍拿鐵", "黑糖綿芋鮮奶"],
     platforms: {
       foodpanda: "https://www.foodpanda.com.tw/restaurant/n8ua/zhen-zhu-dan-nan-zi-de-xian-dian",
+    },
+    promotion: {
+      label: "甜系優惠候選",
+      detail: "Foodpanda 店家頁可先查折扣券或套餐活動，珍珠鮮奶系適合湊多人單。",
+      url: "https://www.foodpanda.com.tw/restaurant/n8ua/zhen-zhu-dan-nan-zi-de-xian-dian",
+      verified: DATA_VERSION,
     },
     source: "Foodpanda 公開頁面",
   },
@@ -239,6 +257,33 @@ const stores = [
     platforms: {
       ubereats:
         "https://www.ubereats.com/tw/store/%E6%B2%90%E6%B2%90mumu-%E9%AB%98%E9%9B%84%E6%A5%A0%E6%A2%93%E5%BA%97/79jnKSc3VYKPoaRvKLKy6A",
+    },
+    source: "Uber Eats 公開頁面",
+  },
+  {
+    id: "xiaoya-dexian",
+    name: "小雅芋頭西米露專賣 楠梓店",
+    area: "德賢路",
+    address: "高雄市楠梓區德賢路264號",
+    rating: 4.9,
+    reviews: "410+",
+    budget: 85,
+    eta: "約 25-45 分",
+    mood: ["milk", "sweet", "new"],
+    caffeine: false,
+    group: false,
+    color: "#8b6fbd",
+    summary: "芋頭西米露和鮮奶系很有飽足感，下午想把點心一起解決可以抽它。",
+    picks: ["芋頭西米露鮮奶", "芋頭西米露", "冬瓜杏仁凍"],
+    platforms: {
+      ubereats:
+        "https://www.ubereats.com/tw/store/%E5%B0%8F%E9%9B%85%E8%8A%8B%E9%A0%AD%E8%A5%BF%E7%B1%B3%E9%9C%B2%E5%B0%88%E8%B3%A3-%E6%A5%A0%E6%A2%93%E5%BA%97/tcG84iaQV_mhmklSI3uxgw",
+    },
+    promotion: {
+      label: "Uber Eats 新客優惠",
+      detail: "公開頁面顯示新顧客 0 元外送費提示，資格和距離需依登入後地址確認。",
+      url: "https://www.ubereats.com/tw/store/%E5%B0%8F%E9%9B%85%E8%8A%8B%E9%A0%AD%E8%A5%BF%E7%B1%B3%E9%9C%B2%E5%B0%88%E8%B3%A3-%E6%A5%A0%E6%A2%93%E5%BA%97/tcG84iaQV_mhmklSI3uxgw",
+      verified: DATA_VERSION,
     },
     source: "Uber Eats 公開頁面",
   },
@@ -270,6 +315,7 @@ const state = {
   platforms: new Set(["foodpanda", "ubereats"]),
   groupOnly: true,
   noCaffeine: false,
+  promoOnly: false,
   search: "",
   current: null,
   favorites: new Set(JSON.parse(localStorage.getItem("k10Favorites") || "[]")),
@@ -282,6 +328,7 @@ const els = {
   budgetValue: document.querySelector("#budgetValue"),
   groupToggle: document.querySelector("#groupToggle"),
   noCaffeineToggle: document.querySelector("#noCaffeineToggle"),
+  promoToggle: document.querySelector("#promoToggle"),
   searchInput: document.querySelector("#searchInput"),
   storeGrid: document.querySelector("#storeGrid"),
   recommendationCard: document.querySelector("#recommendationCard"),
@@ -291,6 +338,7 @@ const els = {
   historyList: document.querySelector("#historyList"),
   storeCount: document.querySelector("#storeCount"),
   dualPlatformCount: document.querySelector("#dualPlatformCount"),
+  promoCount: document.querySelector("#promoCount"),
   favoriteCount: document.querySelector("#favoriteCount"),
   lastUpdated: document.querySelector("#lastUpdated"),
   todayLabel: document.querySelector("#todayLabel"),
@@ -376,6 +424,12 @@ function bindEvents() {
     renderAll();
   });
 
+  els.promoToggle.addEventListener("change", () => {
+    state.promoOnly = els.promoToggle.checked;
+    state.current = pickStore(false);
+    renderAll();
+  });
+
   els.searchInput.addEventListener("input", () => {
     state.search = els.searchInput.value.trim().toLowerCase();
     renderStores();
@@ -417,11 +471,13 @@ function getFilteredStores(ignoreSearch = false) {
     const budgetMatch = store.budget <= state.budget;
     const groupMatch = !state.groupOnly || store.group;
     const caffeineMatch = !state.noCaffeine || !store.caffeine;
-    const searchText = [store.name, store.area, store.address, store.summary, ...store.picks, ...store.mood]
+    const promoMatch = !state.promoOnly || Boolean(store.promotion);
+    const promoText = store.promotion ? [store.promotion.label, store.promotion.detail].join(" ") : "";
+    const searchText = [store.name, store.area, store.address, store.summary, promoText, ...store.picks, ...store.mood]
       .join(" ")
       .toLowerCase();
     const searchMatch = ignoreSearch || !state.search || searchText.includes(state.search);
-    return platformMatch && budgetMatch && groupMatch && caffeineMatch && searchMatch;
+    return platformMatch && budgetMatch && groupMatch && caffeineMatch && promoMatch && searchMatch;
   });
 }
 
@@ -453,6 +509,8 @@ function getScore(store) {
   if (store.mood.includes(state.mood)) score += 4;
   if (store.group && state.groupOnly) score += 1.5;
   if (!store.caffeine && state.noCaffeine) score += 3;
+  if (store.promotion && state.promoOnly) score += 3.5;
+  if (store.promotion) score += 0.8;
   if (Object.keys(store.platforms).length > 1) score += 1.2;
   if (state.favorites.has(store.id)) score += 1;
   score += Math.max(0, (state.budget - store.budget) / 14);
@@ -491,6 +549,10 @@ function renderRecommendation() {
         <span>平台評分</span>
         <strong>${store.rating.toFixed(1)} · ${store.reviews}</strong>
       </div>
+      <div class="detail-tile">
+        <span>優惠線索</span>
+        <strong>${store.promotion ? store.promotion.label : "先查平台"}</strong>
+      </div>
     </div>
     <div class="platform-row">
       ${Object.entries(store.platforms)
@@ -523,6 +585,11 @@ function renderStores() {
     node.querySelector("h3").textContent = store.name;
     node.querySelector(".store-address").textContent = store.address;
     node.querySelector(".store-summary").textContent = store.summary;
+    const promoNote = node.querySelector(".promo-note");
+    if (store.promotion) {
+      promoNote.classList.add("active");
+      promoNote.textContent = `${store.promotion.label}: ${store.promotion.detail}`;
+    }
 
     const favorite = node.querySelector(".favorite-button");
     favorite.classList.toggle("active", state.favorites.has(store.id));
@@ -530,10 +597,15 @@ function renderStores() {
     favorite.addEventListener("click", () => toggleFavorite(store.id));
 
     const tagRow = node.querySelector(".tag-row");
-    [...store.picks.slice(0, 2), store.group ? "團訂友善" : "少杯數"].forEach((tag, index) => {
+    const tags = [...store.picks.slice(0, 2), store.group ? "團訂友善" : "少杯數"];
+    if (store.promotion) {
+      tags.unshift("優惠候選");
+    }
+
+    tags.forEach((tag, index) => {
       const pill = document.createElement("span");
       pill.className = "tag";
-      pill.style.setProperty("--tag-color", index === 0 ? store.color : "#2e6bb5");
+      pill.style.setProperty("--tag-color", tag === "優惠候選" ? "#e99d32" : index === 0 ? store.color : "#2e6bb5");
       pill.textContent = tag;
       tagRow.append(pill);
     });
@@ -581,18 +653,29 @@ function renderMetrics() {
   els.budgetValue.textContent = state.budget;
   els.storeCount.textContent = stores.length;
   els.dualPlatformCount.textContent = stores.filter((store) => Object.keys(store.platforms).length > 1).length;
+  els.promoCount.textContent = stores.filter((store) => store.promotion).length;
   els.favoriteCount.textContent = state.favorites.size;
 }
 
 function renderSources() {
   const links = stores
-    .flatMap((store) =>
-      Object.entries(store.platforms).map(([platform, url]) => ({
+    .flatMap((store) => {
+      const platformLinks = Object.entries(store.platforms).map(([platform, url]) => ({
         label: `${store.name} · ${platformLabel(platform)}`,
         url,
-      })),
-    )
-    .slice(0, 18);
+      }));
+      if (!store.promotion?.url) {
+        return platformLinks;
+      }
+      return [
+        ...platformLinks,
+        {
+          label: `${store.name} · 優惠線索`,
+          url: store.promotion.url,
+        },
+      ];
+    })
+    .slice(0, 24);
 
   els.sourceLinks.innerHTML = "";
   links.forEach((source) => {

@@ -97,6 +97,10 @@
                 <span>避開咖啡因</span>
                 <input id="noCaffeineToggle" type="checkbox" />
               </label>
+              <label class="switch-row">
+                <span>只看優惠候選</span>
+                <input id="promoToggle" type="checkbox" />
+              </label>
             </div>
           </aside>
         </section>
@@ -109,6 +113,10 @@
           <div>
             <span class="metric-value" id="dualPlatformCount">0</span>
             <span class="metric-label">雙平台可查</span>
+          </div>
+          <div>
+            <span class="metric-value" id="promoCount">0</span>
+            <span class="metric-label">優惠候選</span>
           </div>
           <div>
             <span class="metric-value" id="favoriteCount">0</span>
@@ -152,7 +160,8 @@
           <h2>資料來源</h2>
           <p>
             店家候選依 2026-05-02 可查到的 Foodpanda、Uber Eats 公開頁面整理；平台外送範圍、營業時間、
-            外送費與優惠會隨時間和定位變動，下單前請以平台 App 的即時畫面為準。
+            外送費與優惠會隨時間、登入狀態和定位變動。優惠候選只代表近期公開頁面或品牌優惠訊息有折扣線索，
+            下單前請以平台 App 的即時畫面為準。
           </p>
           <div class="source-links" id="sourceLinks"></div>
         </section>
@@ -170,6 +179,7 @@
           <h3></h3>
           <p class="store-address"></p>
           <p class="store-summary"></p>
+          <p class="promo-note"></p>
         </div>
         <div class="tag-row"></div>
         <div class="platform-row"></div>
