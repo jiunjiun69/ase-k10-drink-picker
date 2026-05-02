@@ -74,8 +74,13 @@ const stores = [
         "https://www.ubereats.com/tw/store/%E6%B0%B4%E5%B7%B7%E8%8C%B6%E5%BC%84-%E9%AB%98%E9%9B%84%E6%A5%A0%E6%A2%93%E5%BA%97/2wD6CfbgQyWOubMVU82pdg",
     },
     promotion: {
-      label: "品牌優惠線索",
-      detail: "公開優惠頁曾列折價券與買一送一訊息，是否可套用外送需下單前確認。",
+      label: "品牌券與買一送一線索",
+      detail: "公開優惠頁曾列折價券、瓶裝回購折扣與 LINE 好友買一送一線索，外送可用性需下單前確認。",
+      items: [
+        "滿 200 元贈 20 元折價券",
+        "回購瓶裝飲品每瓶現折 15 元",
+        "冬瓜烏買一送一 LINE 好友券線索",
+      ],
       url: "https://twcoupon.com/brandshop-34964-%E6%B0%B4%E5%B7%B7%E8%8C%B6%E5%BC%84-%E9%AB%98%E9%9B%84%E5%B8%82-%E9%AB%98%E9%9B%84%E6%83%A0%E6%B0%91%E5%BA%97.html",
       verified: DATA_VERSION,
     },
@@ -206,8 +211,13 @@ const stores = [
       foodpanda: "https://www.foodpanda.com.tw/restaurant/h9hl/cocodu-ke-nan-zi-de-xian-dian",
     },
     promotion: {
-      label: "Foodpanda 活動候選",
-      detail: "連鎖店常搭配平台活動，適合先查買多杯、折扣券或免外送門檻。",
+      label: "50% 指定品項",
+      detail: "Foodpanda 公開頁面列出指定品項 50% 優惠，會自動套用；活動商品客製化選項需相同。",
+      items: [
+        "28茉粉角輕乳茶(L) x2: $100，原 $200",
+        "粉角奶茶(L) x2: $70，原 $140",
+        "紅柚香檸美式(L) x2: $90，原 $180",
+      ],
       url: "https://www.foodpanda.com.tw/restaurant/h9hl/cocodu-ke-nan-zi-de-xian-dian",
       verified: DATA_VERSION,
     },
@@ -232,8 +242,9 @@ const stores = [
       foodpanda: "https://www.foodpanda.com.tw/restaurant/n8ua/zhen-zhu-dan-nan-zi-de-xian-dian",
     },
     promotion: {
-      label: "甜系優惠候選",
-      detail: "Foodpanda 店家頁可先查折扣券或套餐活動，珍珠鮮奶系適合湊多人單。",
+      label: "首次訂餐免外送費",
+      detail: "Foodpanda 公開頁面列出首次訂餐享免外送服務費，需消費滿 79 元。",
+      items: ["首次訂餐免外送服務費 $9", "適用門檻: 消費滿 $79"],
       url: "https://www.foodpanda.com.tw/restaurant/n8ua/zhen-zhu-dan-nan-zi-de-xian-dian",
       verified: DATA_VERSION,
     },
@@ -282,6 +293,7 @@ const stores = [
     promotion: {
       label: "Uber Eats 新客優惠",
       detail: "公開頁面顯示新顧客 0 元外送費提示，資格和距離需依登入後地址確認。",
+      items: ["新顧客 0 元外送費", "需依 Uber Eats 登入後地址與資格確認"],
       url: "https://www.ubereats.com/tw/store/%E5%B0%8F%E9%9B%85%E8%8A%8B%E9%A0%AD%E8%A5%BF%E7%B1%B3%E9%9C%B2%E5%B0%88%E8%B3%A3-%E6%A5%A0%E6%A2%93%E5%BA%97/tcG84iaQV_mhmklSI3uxgw",
       verified: DATA_VERSION,
     },
@@ -309,12 +321,84 @@ const stores = [
   },
 ];
 
+const ALL_DAYS = [0, 1, 2, 3, 4, 5, 6];
+
+const WEEKDAYS = [1, 2, 3, 4, 5];
+
+const WEEKENDS = [0, 6];
+
+const operatingInfo = {
+  "magu-innovation": {
+    hoursLabel: "每日 09:00-21:00",
+    hours: [{ days: ALL_DAYS, open: "09:00", close: "21:00" }],
+  },
+  "chatanghui-nanzi": {
+    hoursLabel: "每日 09:15-21:45",
+    hours: [{ days: ALL_DAYS, open: "09:15", close: "21:45" }],
+  },
+  "waterlane-nanzi": {
+    hoursLabel: "每日 09:00-21:30",
+    hours: [{ days: ALL_DAYS, open: "09:00", close: "21:30" }],
+  },
+  "sugarcane-mom": {
+    hoursLabel: "每日 10:00-22:00",
+    hours: [{ days: ALL_DAYS, open: "10:00", close: "22:00" }],
+  },
+  "unocha-tuku": {
+    hoursLabel: "每日 09:00-21:00",
+    hours: [{ days: ALL_DAYS, open: "09:00", close: "21:00" }],
+  },
+  "ninetea-dexian": {
+    hoursLabel: "每日 09:30-21:45",
+    hours: [{ days: ALL_DAYS, open: "09:30", close: "21:45" }],
+  },
+  "ching-shin-dexian": {
+    hoursLabel: "每日 09:00-22:00",
+    hours: [{ days: ALL_DAYS, open: "09:00", close: "22:00" }],
+  },
+  "sugarstand-dexian": {
+    hoursLabel: "每日 10:00-22:00",
+    hours: [{ days: ALL_DAYS, open: "10:00", close: "22:00" }],
+  },
+  "coco-dexian": {
+    hoursLabel: "平日 09:30-20:45；週末 10:00-20:45",
+    hours: [
+      { days: WEEKDAYS, open: "09:30", close: "20:45" },
+      { days: WEEKENDS, open: "10:00", close: "20:45" },
+    ],
+  },
+  "zhenzhudan-dexian": {
+    hoursLabel: "平日 09:00-20:30；週末 10:00-20:30",
+    hours: [
+      { days: WEEKDAYS, open: "09:00", close: "20:30" },
+      { days: WEEKENDS, open: "10:00", close: "20:30" },
+    ],
+  },
+  "mumu-nanzi": {
+    hoursLabel: "每日 10:00-21:00",
+    hours: [{ days: ALL_DAYS, open: "10:00", close: "21:00" }],
+  },
+  "xiaoya-dexian": {
+    hoursLabel: "每日 10:30-22:00",
+    hours: [{ days: ALL_DAYS, open: "10:30", close: "22:00" }],
+  },
+  "fiftylan-lequn": {
+    hoursLabel: "每日 09:00-23:00",
+    hours: [{ days: ALL_DAYS, open: "09:00", close: "23:00" }],
+  },
+};
+
+stores.forEach((store) => {
+  Object.assign(store, operatingInfo[store.id] || {});
+});
+
 const state = {
   mood: "refreshing",
   budget: 85,
   platforms: new Set(["foodpanda", "ubereats"]),
   groupOnly: true,
   noCaffeine: false,
+  openOnly: true,
   promoOnly: false,
   search: "",
   current: null,
@@ -328,6 +412,7 @@ const els = {
   budgetValue: document.querySelector("#budgetValue"),
   groupToggle: document.querySelector("#groupToggle"),
   noCaffeineToggle: document.querySelector("#noCaffeineToggle"),
+  openToggle: document.querySelector("#openToggle"),
   promoToggle: document.querySelector("#promoToggle"),
   searchInput: document.querySelector("#searchInput"),
   storeGrid: document.querySelector("#storeGrid"),
@@ -339,6 +424,7 @@ const els = {
   storeCount: document.querySelector("#storeCount"),
   dualPlatformCount: document.querySelector("#dualPlatformCount"),
   promoCount: document.querySelector("#promoCount"),
+  openNowCount: document.querySelector("#openNowCount"),
   favoriteCount: document.querySelector("#favoriteCount"),
   lastUpdated: document.querySelector("#lastUpdated"),
   todayLabel: document.querySelector("#todayLabel"),
@@ -424,6 +510,12 @@ function bindEvents() {
     renderAll();
   });
 
+  els.openToggle.addEventListener("change", () => {
+    state.openOnly = els.openToggle.checked;
+    state.current = pickStore(false);
+    renderAll();
+  });
+
   els.promoToggle.addEventListener("change", () => {
     state.promoOnly = els.promoToggle.checked;
     state.current = pickStore(false);
@@ -466,24 +558,40 @@ function bindEvents() {
 }
 
 function getFilteredStores(ignoreSearch = false) {
+  const now = getTaipeiNowParts();
   return stores.filter((store) => {
     const platformMatch = Object.keys(store.platforms).some((platform) => state.platforms.has(platform));
     const budgetMatch = store.budget <= state.budget;
     const groupMatch = !state.groupOnly || store.group;
     const caffeineMatch = !state.noCaffeine || !store.caffeine;
+    const openStatus = getStoreOpenState(store, now);
+    const openMatch = !state.openOnly || openStatus.isOpen === true;
     const promoMatch = !state.promoOnly || Boolean(store.promotion);
-    const promoText = store.promotion ? [store.promotion.label, store.promotion.detail].join(" ") : "";
-    const searchText = [store.name, store.area, store.address, store.summary, promoText, ...store.picks, ...store.mood]
+    const promoText = store.promotion ? [store.promotion.label, store.promotion.detail, ...(store.promotion.items || [])].join(" ") : "";
+    const searchText = [
+      store.name,
+      store.area,
+      store.address,
+      store.summary,
+      store.hoursLabel || "",
+      openStatus.label,
+      promoText,
+      ...store.picks,
+      ...store.mood,
+    ]
       .join(" ")
       .toLowerCase();
     const searchMatch = ignoreSearch || !state.search || searchText.includes(state.search);
-    return platformMatch && budgetMatch && groupMatch && caffeineMatch && promoMatch && searchMatch;
+    return platformMatch && budgetMatch && groupMatch && caffeineMatch && openMatch && promoMatch && searchMatch;
   });
 }
 
 function pickStore(seedByDate = false, extraRandom = false) {
   const candidates = getFilteredStores(true);
-  const pool = candidates.length ? candidates : stores;
+  const pool = candidates;
+  if (!pool.length) {
+    return null;
+  }
   const scored = pool.map((store) => ({
     store,
     score: getScore(store) + (extraRandom ? Math.random() * 3 : seededRandom(`${store.id}-${state.mood}-${dateKey()}`) * 1.4),
@@ -506,9 +614,11 @@ function pickStore(seedByDate = false, extraRandom = false) {
 
 function getScore(store) {
   let score = store.rating * 2;
+  const openStatus = getStoreOpenState(store);
   if (store.mood.includes(state.mood)) score += 4;
   if (store.group && state.groupOnly) score += 1.5;
   if (!store.caffeine && state.noCaffeine) score += 3;
+  if (openStatus.isOpen) score += 2.5;
   if (store.promotion && state.promoOnly) score += 3.5;
   if (store.promotion) score += 0.8;
   if (Object.keys(store.platforms).length > 1) score += 1.2;
@@ -516,6 +626,104 @@ function getScore(store) {
   score += Math.max(0, (state.budget - store.budget) / 14);
   if (state.history.slice(0, 3).some((entry) => entry.id === store.id)) score -= 4;
   return score;
+}
+
+function getTaipeiNowParts(date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Taipei",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(date);
+  const lookup = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  const dayMap = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+  return {
+    day: dayMap[lookup.weekday],
+    minutes: Number(lookup.hour) * 60 + Number(lookup.minute),
+  };
+}
+
+function getStoreOpenState(store, now = getTaipeiNowParts()) {
+  if (!store.hours?.length) {
+    return {
+      isOpen: null,
+      label: "查平台",
+      detail: "未整理營業時間",
+      className: "closed",
+    };
+  }
+
+  const previousDay = (now.day + 6) % 7;
+  for (const range of store.hours) {
+    const open = timeToMinutes(range.open);
+    const close = timeToMinutes(range.close);
+    const crossesMidnight = close <= open;
+    const opensToday = range.days.includes(now.day);
+    const openedYesterday = crossesMidnight && range.days.includes(previousDay);
+    if (opensToday && isMinuteInRange(now.minutes, open, close)) {
+      return {
+        isOpen: true,
+        label: "營業中",
+        detail: `到 ${range.close}`,
+        className: "open",
+      };
+    }
+    if (openedYesterday && now.minutes < close) {
+      return {
+        isOpen: true,
+        label: "營業中",
+        detail: `到 ${range.close}`,
+        className: "open",
+      };
+    }
+  }
+
+  return {
+    isOpen: false,
+    label: "未營業",
+    detail: nextOpeningLabel(store, now),
+    className: "closed",
+  };
+}
+
+function isMinuteInRange(current, open, close) {
+  if (close <= open) {
+    return current >= open || current < close;
+  }
+  return current >= open && current < close;
+}
+
+function nextOpeningLabel(store, now) {
+  let next = null;
+  for (let offset = 0; offset <= 7; offset += 1) {
+    const day = (now.day + offset) % 7;
+    store.hours.forEach((range) => {
+      if (!range.days.includes(day)) return;
+      const open = timeToMinutes(range.open);
+      if (offset === 0 && open <= now.minutes) return;
+      const score = offset * 1440 + open;
+      if (!next || score < next.score) {
+        next = { score, offset, open: range.open };
+      }
+    });
+  }
+
+  if (!next) {
+    return "請查平台";
+  }
+
+  const prefix = next.offset === 0 ? "今天" : next.offset === 1 ? "明天" : dayName((now.day + next.offset) % 7);
+  return `${prefix} ${next.open} 開`;
+}
+
+function timeToMinutes(value) {
+  const [hours, minutes] = value.split(":").map(Number);
+  return hours * 60 + minutes;
+}
+
+function dayName(day) {
+  return ["週日", "週一", "週二", "週三", "週四", "週五", "週六"][day];
 }
 
 function renderAll() {
@@ -529,14 +737,30 @@ function renderAll() {
 
 function renderRecommendation() {
   const store = state.current || pickStore(true);
+  if (!store) {
+    els.recommendationCard.innerHTML = `
+      <div class="recommendation-main">
+        <p class="muted">條件暫時沒有符合的店</p>
+        <h2>放寬一下</h2>
+        <p>可以先關掉「只看營業中」或提高預算，再重新抽一次。</p>
+      </div>
+    `;
+    return;
+  }
+
   const platformNames = Object.keys(store.platforms).map(platformLabel).join(" / ");
+  const openStatus = getStoreOpenState(store);
   els.recommendationCard.innerHTML = `
     <div class="recommendation-main">
-      <p class="muted">${store.area} · ${platformNames}</p>
+      <p class="muted">${store.area} · ${platformNames} · ${store.hoursLabel || "請查平台營業時間"}</p>
       <h2>${store.name}</h2>
       <p>${store.summary}</p>
     </div>
     <div class="recommendation-details">
+      <div class="detail-tile">
+        <span>營業狀態</span>
+        <strong class="status-badge ${openStatus.className === "open" ? "" : "closed"}">${openStatus.label} · ${openStatus.detail}</strong>
+      </div>
       <div class="detail-tile">
         <span>先點這杯</span>
         <strong>${store.picks[0]}</strong>
@@ -554,6 +778,7 @@ function renderRecommendation() {
         <strong>${store.promotion ? store.promotion.label : "先查平台"}</strong>
       </div>
     </div>
+    ${promotionMarkup(store)}
     <div class="platform-row">
       ${Object.entries(store.platforms)
         .map(
@@ -565,6 +790,32 @@ function renderRecommendation() {
   `;
 }
 
+function promotionMarkup(store, compact = false) {
+  if (!store.promotion) {
+    return "";
+  }
+
+  return `<div class="promo-note active">${promotionContent(store, compact)}</div>`;
+}
+
+function promotionContent(store, compact = false) {
+  if (!store.promotion) {
+    return "";
+  }
+
+  const items = store.promotion.items || [];
+  const itemList = items.length
+    ? `<ul class="promo-list">${items.map((item) => `<li>${item}</li>`).join("")}</ul>`
+    : "";
+  const verified = store.promotion.verified ? ` · ${store.promotion.verified}` : "";
+
+  return `
+    <strong>${store.promotion.label}</strong>
+    <span>${store.promotion.detail}${compact ? "" : verified}</span>
+    ${itemList}
+  `;
+}
+
 function renderStores() {
   const visibleStores = getFilteredStores();
   els.storeGrid.innerHTML = "";
@@ -572,23 +823,27 @@ function renderStores() {
   if (!visibleStores.length) {
     const empty = document.createElement("p");
     empty.className = "empty-state";
-    empty.textContent = "這組條件暫時沒有候選店家";
+    empty.textContent = state.openOnly
+      ? "這組條件暫時沒有營業中的候選店家"
+      : "這組條件暫時沒有候選店家";
     els.storeGrid.append(empty);
     return;
   }
 
   visibleStores.forEach((store) => {
     const node = template.content.firstElementChild.cloneNode(true);
+    const openStatus = getStoreOpenState(store);
     node.style.setProperty("--avatar", store.color);
     node.querySelector(".store-avatar").textContent = store.name.slice(0, 1);
-    node.querySelector(".store-meta").textContent = `${store.area} · ${store.rating.toFixed(1)} · ${store.reviews}`;
+    node.querySelector(".store-meta").textContent =
+      `${store.area} · ${store.rating.toFixed(1)} · ${store.reviews} · ${store.hoursLabel || "請查平台營業時間"}`;
     node.querySelector("h3").textContent = store.name;
     node.querySelector(".store-address").textContent = store.address;
     node.querySelector(".store-summary").textContent = store.summary;
     const promoNote = node.querySelector(".promo-note");
     if (store.promotion) {
       promoNote.classList.add("active");
-      promoNote.textContent = `${store.promotion.label}: ${store.promotion.detail}`;
+      promoNote.innerHTML = promotionContent(store, true);
     }
 
     const favorite = node.querySelector(".favorite-button");
@@ -598,6 +853,7 @@ function renderStores() {
 
     const tagRow = node.querySelector(".tag-row");
     const tags = [...store.picks.slice(0, 2), store.group ? "團訂友善" : "少杯數"];
+    tags.unshift(`${openStatus.label} · ${openStatus.detail}`);
     if (store.promotion) {
       tags.unshift("優惠候選");
     }
@@ -605,7 +861,10 @@ function renderStores() {
     tags.forEach((tag, index) => {
       const pill = document.createElement("span");
       pill.className = "tag";
-      pill.style.setProperty("--tag-color", tag === "優惠候選" ? "#e99d32" : index === 0 ? store.color : "#2e6bb5");
+      pill.style.setProperty(
+        "--tag-color",
+        tag === "優惠候選" ? "#e99d32" : tag.startsWith("營業中") ? "#168b80" : tag.startsWith("未營業") ? "#c45562" : index === 0 ? store.color : "#2e6bb5",
+      );
       pill.textContent = tag;
       tagRow.append(pill);
     });
@@ -650,10 +909,12 @@ function renderHistory() {
 }
 
 function renderMetrics() {
+  const now = getTaipeiNowParts();
   els.budgetValue.textContent = state.budget;
   els.storeCount.textContent = stores.length;
   els.dualPlatformCount.textContent = stores.filter((store) => Object.keys(store.platforms).length > 1).length;
   els.promoCount.textContent = stores.filter((store) => store.promotion).length;
+  els.openNowCount.textContent = stores.filter((store) => getStoreOpenState(store, now).isOpen === true).length;
   els.favoriteCount.textContent = state.favorites.size;
 }
 

@@ -266,7 +266,7 @@ h1 {
 
 .recommendation-details {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 10px;
 }
 
@@ -446,7 +446,7 @@ legend {
 
 .insight-band {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 1px;
   overflow: hidden;
   margin: 18px 0;
@@ -598,7 +598,47 @@ legend {
 }
 
 .promo-note.active {
-  display: block;
+  display: grid;
+  gap: 8px;
+}
+
+.promo-note strong {
+  color: var(--ink);
+}
+
+.promo-list {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.promo-list li {
+  padding-left: 2px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--teal-dark);
+  font-weight: 900;
+}
+
+.status-badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--teal);
+}
+
+.status-badge.closed {
+  color: var(--rose);
+}
+
+.status-badge.closed::before {
+  background: var(--rose);
 }
 
 .tag {
