@@ -1089,9 +1089,9 @@ const DELIVERY_PAGE_PATTERNS = [
 
 const state = {
   mood: "refreshing",
-  budget: 85,
+  budget: 120,
   platforms: new Set(["foodpanda", "ubereats"]),
-  groupOnly: true,
+  groupOnly: false,
   noCaffeine: false,
   openOnly: true,
   promoOnly: false,
