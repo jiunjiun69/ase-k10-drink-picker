@@ -559,7 +559,7 @@ let stores = [
     caffeine: true,
     group: true,
     color: "#7d6fd0",
-    summary: "你實測 K10 可叫的正確分店；奶蓋、歐蕾和黑糖珍珠系是主打。",
+    summary: "奶蓋、歐蕾和黑糖珍珠系是主打，想喝甜感鮮奶茶時很適合。",
     picks: ["棉被午茉綠", "黑糖珍珠好濃鮮奶", "日安紅珍珠歐蕾"],
     platforms: {
       foodpanda: "https://www.foodpanda.com.tw/restaurant/vqo2/zai-shui-5fen-zhong-nan-zi-lan-tian-dian",
@@ -568,8 +568,8 @@ let stores = [
     },
     promotion: {
       label: "Foodpanda 免費外送線索",
-      detail: "公開搜尋結果列為 Foodpanda 飲料店與免費外送候選，實際資格需以 K10 定位下 App 顯示為準。",
-      items: ["Foodpanda 飲料店候選", "K10 使用者實測可叫"],
+      detail: "平台頁曾出現外送優惠線索，實際資格需以下單時顯示為準。",
+      items: ["外送優惠線索", "依平台 App 即時狀態確認"],
       url: "https://www.foodpanda.com.tw/restaurant/vqo2/zai-shui-5fen-zhong-nan-zi-lan-tian-dian",
       verified: DATA_VERSION,
     },
@@ -588,7 +588,7 @@ let stores = [
     caffeine: true,
     group: true,
     color: "#d35c74",
-    summary: "使用者在 K10 實測可叫，Foodpanda 公開頁面有 15% 優惠和氣泡/歐蕾品項。",
+    summary: "氣泡飲、歐蕾和花草茶品項很有辨識度，想喝清爽或換口味都適合。",
     picks: ["伯爵紅茶歐蕾", "冬瓜菊花茶", "香柚檸檬氣泡飲"],
     platforms: {
       foodpanda: "https://www.foodpanda.com.tw/chain/cr8ax/bu-yao-dui-wo-jian-jiao",
@@ -777,7 +777,7 @@ let stores = [
     id: "islandtea",
     name: "小島嶼茶",
     area: "K10 可外送",
-    address: "平台頁可核對",
+    address: "高雄市楠梓區",
     rating: 4.8,
     reviews: "待補",
     budget: 90,
@@ -786,7 +786,7 @@ let stores = [
     caffeine: true,
     group: false,
     color: "#3c8a9b",
-    summary: "你提供的 K10 可叫直接外送頁候選，實際地址與狀態請點平台核對。",
+    summary: "小店風格的茶飲候選，適合想試試非連鎖品牌的下午。",
     picks: ["招牌茶飲", "水果茶", "鮮奶茶"],
     platforms: {
       ubereats:
@@ -849,7 +849,7 @@ let stores = [
     caffeine: true,
     group: false,
     color: "#465f3d",
-    summary: "楠梓在地茶飲候選，Foodpanda 和 Uber Eats 都有可核對店家頁。",
+    summary: "楠梓在地茶飲候選，招牌茶飲與鮮奶茶都適合日常點單。",
     picks: ["招牌茶飲", "鮮奶茶", "冬瓜茶"],
     platforms: {
       foodpanda: "https://www.foodpanda.com.tw/restaurant/frqt/xin-ge-cha-ye-nan-zi-zong-dian",
@@ -891,7 +891,7 @@ let stores = [
     caffeine: true,
     group: false,
     color: "#536b8f",
-    summary: "楠梓區茶飲候選，有 Foodpanda 直接店家頁可核對。",
+    summary: "楠梓區茶飲候選，招牌茶飲、鮮奶茶和水果茶都有。",
     picks: ["招牌茶飲", "鮮奶茶", "水果茶"],
     platforms: {
       foodpanda: "https://www.foodpanda.com.tw/restaurant/di3c/te-hao-he-toptiertea-gao-xiong-nan-zi-dian",
