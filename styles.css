@@ -634,12 +634,24 @@ legend {
   background: var(--teal);
 }
 
+.status-badge.open {
+  color: var(--teal-dark);
+}
+
 .status-badge.closed {
   color: var(--rose);
 }
 
 .status-badge.closed::before {
   background: var(--rose);
+}
+
+.status-badge.checking {
+  color: var(--amber);
+}
+
+.status-badge.checking::before {
+  background: var(--amber);
 }
 
 .tag {

@@ -906,6 +906,27 @@ const WEEKDAYS = [1, 2, 3, 4, 5];
 
 const WEEKENDS = [0, 6];
 
+const OPENING_CHECK_BUFFER_MINUTES = 20;
+
+const CLOSING_CHECK_BUFFER_MINUTES = 15;
+
+const REFERENCE_HOURS_STORE_IDS = new Set([
+  "mrwish-jiachang",
+  "kebuke-dexian",
+  "hechalou-dexian",
+  "donutes-dexian",
+  "songben-haizhuan",
+  "letea-shoufeng",
+  "qingtea-studio",
+  "dezheng-dexian",
+  "islandtea",
+  "yimuri-shoufeng",
+  "marchmu-dexian",
+  "xinge-tea",
+  "wootea-dexian",
+  "toptiertea-nanzi",
+]);
+
 const operatingInfo = {
   "magu-innovation": {
     hoursLabel: "每日 09:00-21:00",
@@ -1093,7 +1114,7 @@ const state = {
   platforms: new Set(["foodpanda", "ubereats"]),
   groupOnly: false,
   noCaffeine: false,
-  openOnly: true,
+  openOnly: false,
   promoOnly: false,
   search: "",
   current: null,
@@ -1281,6 +1302,9 @@ function initializeStoreData() {
 function applyOperatingInfo(storeList) {
   storeList.forEach((store) => {
     Object.assign(store, operatingInfo[store.id] || {});
+    if (!store.hoursConfidence && REFERENCE_HOURS_STORE_IDS.has(store.id)) {
+      store.hoursConfidence = "reference";
+    }
   });
 }
 
@@ -1321,6 +1345,7 @@ function normalizeStoreList(value) {
     source: store.source || "本機匯入",
     hoursLabel: store.hoursLabel,
     hours: Array.isArray(store.hours) ? store.hours : undefined,
+    hoursConfidence: store.hoursConfidence,
   }));
 }
 
@@ -1476,7 +1501,9 @@ function getScore(store) {
   if (store.mood.includes(state.mood)) score += 4;
   if (store.group && state.groupOnly) score += 1.5;
   if (!store.caffeine && state.noCaffeine) score += 3;
-  if (openStatus.isOpen) score += 2.5;
+  if (openStatus.isOpen === true) score += 2.5;
+  if (openStatus.isOpen === false) score -= 3;
+  if (openStatus.isOpen === null) score -= 1.2;
   if (store.promotion && state.promoOnly) score += 3.5;
   if (store.promotion) score += 0.8;
   if (Object.keys(store.platforms).length > 1) score += 1.2;
@@ -1508,33 +1535,48 @@ function getStoreOpenState(store, now = getTaipeiNowParts()) {
       isOpen: null,
       label: "查平台",
       detail: "未整理營業時間",
-      className: "closed",
+      className: "checking",
     };
   }
 
   const previousDay = (now.day + 6) % 7;
   for (const range of store.hours) {
-    const open = timeToMinutes(range.open);
-    const close = timeToMinutes(range.close);
-    const crossesMidnight = close <= open;
-    const opensToday = range.days.includes(now.day);
-    const openedYesterday = crossesMidnight && range.days.includes(previousDay);
-    if (opensToday && isMinuteInRange(now.minutes, open, close)) {
+    const activeRange = activeRangeInfo(range, now, previousDay);
+    if (!activeRange) continue;
+
+    if (store.hoursConfidence === "reference") {
       return {
-        isOpen: true,
-        label: "營業中",
-        detail: `到 ${range.close}`,
-        className: "open",
+        isOpen: null,
+        label: "查平台",
+        detail: "參考時段內",
+        className: "checking",
       };
     }
-    if (openedYesterday && now.minutes < close) {
+
+    if (activeRange.minutesSinceOpen < OPENING_CHECK_BUFFER_MINUTES) {
       return {
-        isOpen: true,
-        label: "營業中",
-        detail: `到 ${range.close}`,
-        className: "open",
+        isOpen: null,
+        label: "剛開店",
+        detail: "請先查平台",
+        className: "checking",
       };
     }
+
+    if (activeRange.minutesUntilClose <= CLOSING_CHECK_BUFFER_MINUTES) {
+      return {
+        isOpen: null,
+        label: "快休息",
+        detail: `到 ${range.close}`,
+        className: "checking",
+      };
+    }
+
+    return {
+      isOpen: true,
+      label: "營業中",
+      detail: `到 ${range.close}`,
+      className: "open",
+    };
   }
 
   return {
@@ -1545,11 +1587,35 @@ function getStoreOpenState(store, now = getTaipeiNowParts()) {
   };
 }
 
-function isMinuteInRange(current, open, close) {
-  if (close <= open) {
-    return current >= open || current < close;
+function activeRangeInfo(range, now, previousDay) {
+  const open = timeToMinutes(range.open);
+  const close = timeToMinutes(range.close);
+  const crossesMidnight = close <= open;
+  const opensToday = range.days.includes(now.day);
+  const openedYesterday = crossesMidnight && range.days.includes(previousDay);
+
+  if (!crossesMidnight && opensToday && now.minutes >= open && now.minutes < close) {
+    return {
+      minutesSinceOpen: now.minutes - open,
+      minutesUntilClose: close - now.minutes,
+    };
   }
-  return current >= open && current < close;
+
+  if (crossesMidnight && opensToday && now.minutes >= open) {
+    return {
+      minutesSinceOpen: now.minutes - open,
+      minutesUntilClose: close + 1440 - now.minutes,
+    };
+  }
+
+  if (crossesMidnight && openedYesterday && now.minutes < close) {
+    return {
+      minutesSinceOpen: now.minutes + 1440 - open,
+      minutesUntilClose: close - now.minutes,
+    };
+  }
+
+  return null;
 }
 
 function nextOpeningLabel(store, now) {
@@ -1600,7 +1666,7 @@ function renderRecommendation() {
       <div class="recommendation-main">
         <p class="muted">條件暫時沒有符合的店</p>
         <h2>放寬一下</h2>
-        <p>可以先關掉「只看營業中」或提高預算，再重新抽一次。</p>
+        <p>可以先關掉「只看高把握營業中」或提高預算，再重新抽一次。</p>
       </div>
     `;
     return;
@@ -1617,7 +1683,7 @@ function renderRecommendation() {
     <div class="recommendation-details">
       <div class="detail-tile">
         <span>營業狀態</span>
-        <strong class="status-badge ${openStatus.className === "open" ? "" : "closed"}">${openStatus.label} · ${openStatus.detail}</strong>
+        <strong class="status-badge ${openStatus.className}">${openStatus.label} · ${openStatus.detail}</strong>
       </div>
       <div class="detail-tile">
         <span>先點這杯</span>
@@ -1682,7 +1748,7 @@ function renderStores() {
     const empty = document.createElement("p");
     empty.className = "empty-state";
     empty.textContent = state.openOnly
-      ? "這組條件暫時沒有營業中的候選店家"
+      ? "這組條件暫時沒有高把握營業中的候選店家"
       : "這組條件暫時沒有候選店家";
     els.storeGrid.append(empty);
     return;
@@ -1719,9 +1785,10 @@ function renderStores() {
     tags.forEach((tag, index) => {
       const pill = document.createElement("span");
       pill.className = "tag";
+      const statusColor = statusTagColor(tag);
       pill.style.setProperty(
         "--tag-color",
-        tag === "優惠候選" ? "#e99d32" : tag.startsWith("營業中") ? "#168b80" : tag.startsWith("未營業") ? "#c45562" : index === 0 ? store.color : "#2e6bb5",
+        tag === "優惠候選" ? "#e99d32" : statusColor || (index === 0 ? store.color : "#2e6bb5"),
       );
       pill.textContent = tag;
       tagRow.append(pill);
@@ -1740,6 +1807,13 @@ function renderStores() {
 
     els.storeGrid.append(node);
   });
+}
+
+function statusTagColor(tag) {
+  if (tag.startsWith("營業中")) return "#168b80";
+  if (tag.startsWith("未營業")) return "#c45562";
+  if (tag.startsWith("查平台") || tag.startsWith("剛開店") || tag.startsWith("快休息")) return "#e99d32";
+  return "";
 }
 
 function renderHistory() {
