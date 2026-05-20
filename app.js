@@ -376,7 +376,7 @@ let stores = [
     picks: ["老爹紅茶", "老爹鮮奶茶", "冬瓜檸檬"],
     platforms: {
       ubereats:
-        "https://www.ubereats.com/tw/store/%E7%B4%85%E8%8C%B6%E8%80%81%E7%88%B9-%E6%A5%A0%E6%A2%93%E6%96%B0%E5%BA%97/F5MYyvp2Tj2cGmDXsafidQ",
+        "https://www.ubereats.com/tw/store/%E7%B4%85%E8%8C%B6%E8%80%81%E7%88%B9-%E6%A5%A0%E6%A2%93%E5%BE%8C%E5%8B%81%E5%BA%97/BtvvkaUYWKqgEBcbOe4YYA",
     },
     source: "Uber Eats 公開頁面",
   },
