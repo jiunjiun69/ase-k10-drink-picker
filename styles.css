@@ -55,7 +55,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -475,6 +476,7 @@ legend {
 }
 
 .stores-section,
+.new-arrivals,
 .history-section,
 .data-section,
 .source-note {
@@ -484,6 +486,92 @@ legend {
 .stores-section {
   display: grid;
   gap: 14px;
+}
+
+.new-arrivals {
+  display: grid;
+  gap: 14px;
+  padding: clamp(18px, 3vw, 28px);
+  border: 1px solid color-mix(in srgb, var(--teal) 32%, var(--line));
+  border-radius: var(--radius);
+  background:
+    radial-gradient(circle at 96% 0%, color-mix(in srgb, var(--amber) 15%, transparent), transparent 35%),
+    color-mix(in srgb, var(--surface-soft) 60%, var(--surface));
+}
+
+.section-note {
+  max-width: 420px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.6;
+  text-align: right;
+}
+
+.arrival-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.arrival-card {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--arrival-color, var(--teal));
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+}
+
+.arrival-card-head,
+.arrival-footer,
+.results-toolbar,
+.store-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.arrival-card-head {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 850;
+}
+
+.new-badge,
+.card-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 25px;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 0.7rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+}
+
+.arrival-card h3 {
+  font-size: 1.35rem;
+}
+
+.arrival-card > p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.arrival-footer {
+  align-items: end;
+  margin-top: auto;
+}
+
+.arrival-footer > span {
+  font-size: 0.85rem;
+  font-weight: 850;
 }
 
 .section-heading {
@@ -508,6 +596,70 @@ legend {
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
+}
+
+.store-tools {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.sort-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.sort-box select {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.results-toolbar {
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface-soft) 60%, transparent);
+}
+
+.results-toolbar p {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.results-toolbar > div {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-action {
+  min-height: 32px;
+  padding: 0 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.filter-action.active,
+.filter-action[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--teal) 60%, var(--line));
+  background: color-mix(in srgb, var(--teal) 14%, var(--surface));
+  color: var(--teal-dark);
 }
 
 .search-box input {
@@ -539,6 +691,24 @@ legend {
   align-items: start;
   justify-content: space-between;
   gap: 12px;
+}
+
+.avatar-wrap {
+  position: relative;
+}
+
+.card-badge {
+  position: absolute;
+  right: -12px;
+  bottom: -7px;
+  min-height: 22px;
+  padding: 0 7px;
+  background: var(--teal-dark);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+}
+
+.store-card.new-arrival {
+  border-color: color-mix(in srgb, var(--teal) 45%, var(--line));
 }
 
 .store-avatar {
@@ -822,6 +992,11 @@ legend {
   text-align: center;
 }
 
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--blue) 52%, transparent);
+  outline-offset: 3px;
+}
+
 @media (hover: hover) {
   .top-actions a:hover,
   .icon-button:hover,
@@ -829,6 +1004,7 @@ legend {
   .platform-link:hover,
   .chip:hover,
   .favorite-button:hover,
+  .filter-action:hover,
   .source-links a:hover {
     transform: translateY(-1px);
   }
@@ -893,6 +1069,7 @@ legend {
 
   .recommendation-details,
   .insight-band,
+  .arrival-grid,
   .store-grid,
   .data-grid {
     grid-template-columns: 1fr;
@@ -901,6 +1078,31 @@ legend {
   .section-heading {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .section-note {
+    text-align: left;
+  }
+
+  .store-tools,
+  .results-toolbar,
+  .arrival-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .store-tools,
+  .sort-box {
+    width: 100%;
+  }
+
+  .sort-box select {
+    flex: 1;
+  }
+
+  .results-toolbar > div {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .search-box {
