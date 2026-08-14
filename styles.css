@@ -852,6 +852,14 @@ legend {
   color: #178a42;
 }
 
+.platform-link.nidin {
+  color: #a33a25;
+}
+
+.platform-link.maps {
+  color: var(--blue);
+}
+
 .history-section,
 .data-section,
 .source-note {

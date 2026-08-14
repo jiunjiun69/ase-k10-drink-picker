@@ -1,4 +1,4 @@
-const DATA_VERSION = "2026-07-30";
+const DATA_VERSION = "2026-08-14";
 
 const moods = [
   { id: "refreshing", label: "解暑", color: "#168b80" },
@@ -984,6 +984,53 @@ let stores = [
     },
     source: "品牌開幕公告 / Foodpanda 與 Uber Eats 外送頁",
   },
+  {
+    id: "peaktea-dexian",
+    name: "青山 青茶專業製作 楠梓德賢店",
+    area: "德賢路",
+    address: "高雄市楠梓區德賢路202號",
+    rating: 4.8,
+    reviews: "新店待累積",
+    budget: 90,
+    eta: "約 25-45 分",
+    mood: ["new", "tea", "milk", "refreshing", "group"],
+    caffeine: true,
+    group: true,
+    color: "#315b50",
+    summary: "2026 年 5 月開幕的青茶專門店，原葉青茶、玄米茶與茶拿鐵適合偏好清爽茶感的人。",
+    picks: ["冬青", "桂花玄米茶", "天蟬那堤"],
+    platforms: {
+      ubereats: "https://www.ubereats.com/tw/store/%E9%9D%92%E5%B1%B1-%E9%9D%92%E8%8C%B6%E5%B0%88%E6%A5%AD%E8%A3%BD%E4%BD%9C-%E6%A5%A0%E6%A2%93%E5%BE%B7%E8%B3%A2%E5%BA%97/DJGIrJmGWWqYy63vYRYavQ",
+    },
+    mapUrl: "https://maps.app.goo.gl/Qw18fefSvCzKSyxA7",
+    source: "品牌開幕公告 / Uber Eats 外送頁 / 使用者提供",
+    newArrival: true,
+    openedAt: "2026-05-23",
+  },
+  {
+    id: "dawow-dexian",
+    name: "大王茶迷 楠梓店｜沁心",
+    area: "德賢路",
+    address: "高雄市楠梓區德賢路196號",
+    rating: 4.8,
+    reviews: "新店待累積",
+    budget: 90,
+    eta: "約 20-40 分",
+    mood: ["new", "tea", "fruit", "refreshing", "group"],
+    caffeine: true,
+    group: true,
+    color: "#8b2433",
+    summary: "2026 年 7 月開幕，主打台灣原葉烏龍、檸檬汁與水果茶，可從 Uber Eats 或官方頁面線上點餐。",
+    picks: ["大王靜焙烏龍", "霍頓莊園水果茶", "大王檸檬汁"],
+    platforms: {
+      ubereats: "https://www.ubereats.com/tw/store/%E5%A4%A7%E7%8E%8B%E8%8C%B6%E8%BF%B7%E4%B8%A8%E5%8E%9F%E8%91%89%E7%83%8F%E9%BE%8D%E6%AA%B8%E6%AA%AC%E8%8C%B6-%E6%A5%A0%E6%A2%93%E5%BA%97/iMtZS6KFWRus75biBhALLA",
+      nidin: "https://order.nidin.shop/brand/dawowbrand",
+    },
+    mapUrl: "https://maps.app.goo.gl/SYFR6wCGjrryB1qU8",
+    source: "Uber Eats 外送頁 / 品牌門市資訊 / 官方線上點餐 / 使用者提供",
+    newArrival: true,
+    openedAt: "2026-07-18",
+  },
 ];
 
 const ALL_DAYS = [0, 1, 2, 3, 4, 5, 6];
@@ -1184,6 +1231,10 @@ const operatingInfo = {
     hoursLabel: "每日 09:30-21:30（售完為止）",
     hours: [{ days: ALL_DAYS, open: "09:30", close: "21:30" }],
   },
+  "dawow-dexian": {
+    hoursLabel: "每日 09:00-21:00",
+    hours: [{ days: ALL_DAYS, open: "09:00", close: "21:00" }],
+  },
 };
 
 const STORE_OVERRIDE_KEY = "k10StoresOverride";
@@ -1196,6 +1247,8 @@ const DELIVERY_PAGE_PATTERNS = [
   "foodpanda.com.tw/restaurant/",
   "foodpanda.com.tw/chain/",
   "ubereats.com/tw/store/",
+  "order.nidin.shop/brand/",
+  "order.nidin.shop/menu/",
 ];
 
 const state = {
@@ -1228,6 +1281,7 @@ const els = {
   resetFiltersButton: document.querySelector("#resetFiltersButton"),
   resultSummary: document.querySelector("#resultSummary"),
   newArrivalGrid: document.querySelector("#newArrivalGrid"),
+  newArrivalsTitle: document.querySelector("#newArrivalsTitle"),
   storeGrid: document.querySelector("#storeGrid"),
   recommendationCard: document.querySelector("#recommendationCard"),
   drawButton: document.querySelector("#drawButton"),
@@ -1460,6 +1514,7 @@ function normalizeStoreList(value) {
     hoursConfidence: store.hoursConfidence,
     newArrival: Boolean(store.newArrival),
     openedAt: store.openedAt,
+    mapUrl: store.mapUrl,
   }));
 }
 
@@ -1508,7 +1563,7 @@ function importStoreData() {
     const imported = normalizeStoreList(JSON.parse(els.storeJsonInput.value));
     const invalid = imported.filter((store) => !hasDirectDeliveryLink(store));
     if (invalid.length) {
-      throw new Error(`有 ${invalid.length} 間缺少直接外送店家頁，未套用`);
+      throw new Error(`有 ${invalid.length} 間缺少直接外送或官方線上點餐頁，未套用`);
     }
     localStorage.setItem(STORE_OVERRIDE_KEY, JSON.stringify(imported));
     initializeStoreData();
@@ -1805,6 +1860,7 @@ function renderNewArrivals() {
     .filter((store) => store.newArrival)
     .sort((a, b) => String(b.openedAt).localeCompare(String(a.openedAt)));
   els.newArrivalGrid.innerHTML = "";
+  els.newArrivalsTitle.textContent = `最近新開的 ${arrivals.length} 間`;
 
   arrivals.forEach((store) => {
     const article = document.createElement("article");
@@ -1816,6 +1872,9 @@ function renderNewArrivals() {
           `<a class="platform-link ${platform}" href="${url}" target="_blank" rel="noreferrer">${platformLabel(platform)}</a>`,
       )
       .join("");
+    const mapLink = store.mapUrl
+      ? `<a class="platform-link maps" href="${store.mapUrl}" target="_blank" rel="noreferrer">Google Maps</a>`
+      : "";
     article.innerHTML = `
       <div class="arrival-card-head">
         <span class="new-badge">NEW · ${formatOpenedAt(store.openedAt)}</span>
@@ -1825,7 +1884,7 @@ function renderNewArrivals() {
       <p>${store.summary}</p>
       <div class="arrival-footer">
         <span>推薦 ${store.picks[0]}</span>
-        <div class="platform-row">${platformLinks}</div>
+        <div class="platform-row">${platformLinks}${mapLink}</div>
       </div>
     `;
     els.newArrivalGrid.append(article);
@@ -1991,6 +2050,15 @@ function renderStores() {
       link.textContent = platformLabel(platform);
       platformRow.append(link);
     });
+    if (store.mapUrl) {
+      const mapLink = document.createElement("a");
+      mapLink.className = "platform-link maps";
+      mapLink.href = store.mapUrl;
+      mapLink.target = "_blank";
+      mapLink.rel = "noreferrer";
+      mapLink.textContent = "Google Maps";
+      platformRow.append(mapLink);
+    }
 
     els.storeGrid.append(node);
   });
@@ -2097,7 +2165,10 @@ function toggleFavorite(id) {
 }
 
 function platformLabel(platform) {
-  return platform === "foodpanda" ? "foodpanda" : "Uber Eats";
+  if (platform === "foodpanda") return "foodpanda";
+  if (platform === "ubereats") return "Uber Eats";
+  if (platform === "nidin") return "官方線上點餐";
+  return platform;
 }
 
 function dateKey() {
